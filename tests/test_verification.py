@@ -183,14 +183,18 @@ def test_manifest_round_trip(tmp_path: Path) -> None:
     assert verify_manifest(manifest, tmp_path)["added"] == ["c.txt"]
 
 
-def test_manifest_skips_its_own_artefacts(tmp_path: Path) -> None:
+def test_manifest_excludes_only_itself(tmp_path: Path) -> None:
+    """A reader has to be able to check the report too, so it is covered."""
     (tmp_path / "integrity_manifest.json").write_text("{}", encoding="utf-8")
     (tmp_path / "verification_report.json").write_text("{}", encoding="utf-8")
     (tmp_path / "claim_to_code.json").write_text("{}", encoding="utf-8")
     (tmp_path / "real.py").write_text("x = 1\n", encoding="utf-8")
     manifest = build_manifest(tmp_path)
-    assert manifest.file_count == 1
+    assert manifest.file_count == 3
     assert "real.py" in manifest.entries
+    assert "verification_report.json" in manifest.entries
+    assert "claim_to_code.json" in manifest.entries
+    assert "integrity_manifest.json" not in manifest.entries
 
 
 def test_manifest_records_no_absolute_path(tmp_path: Path) -> None:
@@ -206,10 +210,13 @@ def test_bundle_records_the_engineering_defaults(tmp_path: Path) -> None:
     conformance = audit(load_claim_map(), load_paper_reported())
     execution = run_execution_verification(None)
     manifest = build_manifest(tmp_path)
-    bundle = build_bundle(conformance, execution, manifest)
+    del manifest
+    bundle = build_bundle(conformance, execution)
     assert bundle.verification_report["engineering_defaults"] == ENGINEERING_DEFAULTS
     assert bundle.claim_to_code["summary"]["claims"] >= 60
-    assert bundle.manifest["file_count"] == 0
-    written = write_bundle(bundle, tmp_path)
+    written, built = write_bundle(bundle, tmp_path)
     assert all(path.is_file() for path in written.values())
+    # The manifest has to describe the tree it ships with, reports included.
+    assert built.file_count >= 2
+    assert "verification_report.json" in built.entries
     assert verify_written_manifest(tmp_path)["matches"]

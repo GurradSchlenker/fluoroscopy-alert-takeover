@@ -15,7 +15,7 @@ from ..utils.logging import get_logger
 from ..verification.conformance import audit, load_claim_map, load_paper_reported
 from ..verification.execution import run_execution_verification
 from ..verification.manifest import MANIFEST_NAME
-from ..verification.report import build_bundle, manifest_of, write_bundle
+from ..verification.report import build_bundle, write_bundle
 from .common import EXIT_FAILED, EXIT_OK, cohort_root_from, prepare_context
 
 _LOG = get_logger("cli.verify")
@@ -33,9 +33,8 @@ def main(argv: list[str] | None = None) -> int:
         _LOG.warning("no cohort root at %s; cohort-dependent checks will be BLOCKED", root)
     execution = run_execution_verification(cohort)
 
-    manifest = manifest_of(_RELEASE_ROOT)
-    bundle = build_bundle(conformance, execution, manifest)
-    written = write_bundle(bundle, _RELEASE_ROOT)
+    bundle = build_bundle(conformance, execution)
+    written, manifest = write_bundle(bundle, _RELEASE_ROOT)
     summary = _summary(bundle.verification_report)
     context.record(
         {

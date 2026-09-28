@@ -7,6 +7,7 @@
     "LICENSE": "09c00659ba9ab38ecf116cac505b8e20adf8cf6aa7d6fc5d3b41ab9c4f565079",
     "README.md": "1eb2df6f930e3258e3683639926c0eab9618708f3e64dece8ee900d6fd869f94",
     "THIRD_PARTY_NOTICES.txt": "cb8c0972050fbf25071e9fdd8e12478d9743090884873b6e0102373c6abf25df",
+    "claim_to_code.json": "91f6af2c2553d3d2095ed8e64247c68b7ac95e398ce57f5b637dbd985bc70c62",
     "configs/alert/default.yaml": "b117f751ad934c2f08f5c26337c754e1a10a4cf261f362f02f5c8210de292a28",
     "configs/cohort/default.yaml": "a833a515ddd655dc9fe88eb28ae063733bb761a9057bd43c9a2b169c3de4523b",
     "configs/estimator/default.yaml": "02d7c3f4bd32d3472f6064272e93f4b76029e7bc5ebaf4a9e433eeee099f6239",
@@ -53,7 +54,7 @@
     "src/fluoroscopy_alert_takeover/cli/strata.py": "c9388a8dad287000f5a4d2aaec96f0855a90f66ad3eed1846661522e5464d7f5",
     "src/fluoroscopy_alert_takeover/cli/tables.py": "f14e375f510f8302ffb2bea9fc868a2e597e7c3b30bccacabd6a9cdb26715295",
     "src/fluoroscopy_alert_takeover/cli/train_alert.py": "e38df3a45b926e815ae91e3d24cb647dcb3417a319de0bb3b2d8339e83f56f2a",
-    "src/fluoroscopy_alert_takeover/cli/verify.py": "9ba2e863b3c73cccf9f26c2349a9b08690a4f053ea2754888739c888b587622d",
+    "src/fluoroscopy_alert_takeover/cli/verify.py": "ae4baacfbab974a783726f6796969bcb28144709865b6ff17be03e72dc61b8da",
     "src/fluoroscopy_alert_takeover/cohort/__init__.py": "6e0e1f72e7382ef26269714e800eb3baea95ef6fc1a658551dcd731c267da12b",
     "src/fluoroscopy_alert_takeover/cohort/builder.py": "ce2a9d4cc312c61fb2f282776f7135be048e1a27f501d728f768cceef63319bb",
     "src/fluoroscopy_alert_takeover/cohort/cine.py": "35afef8d1e2a89b9d431a8752d8ff4e66b7056d80fa5484069469132fbeef734",
@@ -135,9 +136,9 @@
     "src/fluoroscopy_alert_takeover/verification/claim_map.json": "c004550d0862361caf82f5d9f701964c668cac88d1f07b294cb890ce8b4366e8",
     "src/fluoroscopy_alert_takeover/verification/conformance.py": "8d712bda9e22baee82e4a55a2102ca0c3dddf7faccbe4d4ca7a894890f9594d2",
     "src/fluoroscopy_alert_takeover/verification/execution.py": "e9d48775f85b0eb7934b70931a092ca21d119a8c2493ec59d1375ef6907dc4f8",
-    "src/fluoroscopy_alert_takeover/verification/manifest.py": "2400b86d85612a7b9299afa17714ca5ebaed15367b03e2c52cd13330cc9f23b2",
+    "src/fluoroscopy_alert_takeover/verification/manifest.py": "335fb04db8c5d6c191464f6bf724cb7da2e18758d7957f4231fbe0036369ab19",
     "src/fluoroscopy_alert_takeover/verification/paper_reported.json": "34a4007bc1ec0b0dfa8989ca26e5d31281e240f76d0a1ef58cb318fe6d65e040",
-    "src/fluoroscopy_alert_takeover/verification/report.py": "f704765016517d86de69e351a207d451a1e9b0a5fbedba38415788df112a2cc5",
+    "src/fluoroscopy_alert_takeover/verification/report.py": "ef03a6c3e44841dba510a585dce017198e6bcfc6600969de513ffd52eb829ebe",
     "src/fluoroscopy_alert_takeover/workflow/__init__.py": "5e311ce14d728396f6c9e3ffad729090c6ab9e7fcbd0156364fccd6e8276fe29",
     "src/fluoroscopy_alert_takeover/workflow/latency.py": "f0de5af2ee87f7e279a28f59ca3c6c9fd5d804d98bf95eefd5e5abb82c95326b",
     "src/fluoroscopy_alert_takeover/workflow/procedure_metrics.py": "c1beaacc7c485ceda1974a85f55f0575ef3d90d619ddb091b3b6f12739cb9869",
@@ -154,7 +155,8 @@
     "tests/test_pipeline_and_reporting.py": "0c677e599a7a53328b1424d28fdaf652ffd68c6a93872d788f9d14be171d4474",
     "tests/test_schema_and_reader.py": "ad3cca1cd6dbf7860b458513fc071ced844a423dc10511b0ad1aeeda8449bd9a",
     "tests/test_training_smoke.py": "fa616b52794d206256e476d4fbd5f26b7978b23aecf1cc547dddcaea762f1b74",
-    "tests/test_verification.py": "1fbe1c225698361c3e803d648385ae01093c856730cbbc8f119ef5148ae96989"
+    "tests/test_verification.py": "90cd27b715cc8f46ffb51be7c77aede25d8df03431610d5349285ef806d74b6b",
+    "verification_report.json": "29960f38b711e7ccfea2ddd04e99b0925e3c34ddd4af6e48edce5377e31cf890"
   },
   "excluded": {
     "directories": [
@@ -172,9 +174,7 @@
       "venv"
     ],
     "files": [
-      "claim_to_code.json",
-      "integrity_manifest.json",
-      "verification_report.json"
+      "integrity_manifest.json"
     ],
     "suffixes": [
       ".pyc",
@@ -187,7 +187,7 @@
       ".log"
     ]
   },
-  "file_count": 154,
+  "file_count": 156,
   "paths_are": "relative to the release root",
   "root": "."
 }

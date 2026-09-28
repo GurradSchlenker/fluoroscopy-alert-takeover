@@ -1,8 +1,9 @@
 """Integrity manifest of the release tree.
 
-Ref: none - release-internal. The manifest lists the SHA-256 of every tracked file so a
-reviewer can tell whether a copy of the release is the copy that was verified. It excludes
-itself, because a file cannot contain its own hash, and it excludes run artefacts.
+Ref: none - release-internal. The manifest lists the SHA-256 of every file that ships, so a
+reader can tell whether a copy of the release is the copy that was verified. It covers the
+two verification artefacts as well as the tree, and excludes only itself, because a file
+cannot contain its own hash.
 """
 
 from __future__ import annotations
@@ -30,7 +31,6 @@ EXCLUDED_DIRECTORIES = frozenset(
 )
 EXCLUDED_SUFFIXES = (".pyc", ".pyo", ".pt", ".pth", ".ckpt", ".npz", ".npy", ".log")
 MANIFEST_NAME = "integrity_manifest.json"
-REPORT_NAMES = frozenset({"verification_report.json", "claim_to_code.json"})
 
 
 @dataclass
@@ -59,7 +59,7 @@ class Manifest:
             "excluded": {
                 "directories": sorted(EXCLUDED_DIRECTORIES),
                 "suffixes": list(EXCLUDED_SUFFIXES),
-                "files": sorted({MANIFEST_NAME, *REPORT_NAMES}),
+                "files": [MANIFEST_NAME],
             },
         }
 
@@ -74,7 +74,7 @@ def build_manifest(root: Path, extra_excluded: frozenset[str] = frozenset()) -> 
         relative = path.relative_to(resolved)
         if any(part in EXCLUDED_DIRECTORIES for part in relative.parts):
             continue
-        if relative.name in {MANIFEST_NAME, *REPORT_NAMES} or relative.name in extra_excluded:
+        if relative.name == MANIFEST_NAME or relative.name in extra_excluded:
             continue
         if path.suffix in EXCLUDED_SUFFIXES:
             continue

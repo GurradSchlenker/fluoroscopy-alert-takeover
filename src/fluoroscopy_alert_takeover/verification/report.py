@@ -65,19 +65,18 @@ ENGINEERING_DEFAULTS: dict[str, str] = {
 
 @dataclass(frozen=True)
 class VerificationBundle:
-    """The three artefacts, ready to write."""
+    """The two report artefacts, ready to write."""
 
     claim_to_code: dict[str, object]
     verification_report: dict[str, object]
-    manifest: dict[str, object]
 
 
-def build_bundle(
-    conformance: ConformanceReport,
-    execution: ExecutionReport,
-    manifest: Manifest,
-) -> VerificationBundle:
-    """Assemble the artefacts from both verification layers."""
+def build_bundle(conformance: ConformanceReport, execution: ExecutionReport) -> VerificationBundle:
+    """Assemble the two report artefacts from both verification layers.
+
+    The integrity manifest is not assembled here: it has to be built from the tree *after*
+    the reports are on disk, or it would record the digests of the previous run's bytes.
+    """
     conformance_payload = conformance.as_dict()
     execution_payload = execution.as_dict()
     claim_payload: dict[str, object] = {
@@ -115,21 +114,26 @@ def build_bundle(
             "here and are exercised by the suite instead.",
         ],
     }
-    return VerificationBundle(
-        claim_to_code=claim_payload,
-        verification_report=report,
-        manifest=manifest.as_dict(),
-    )
+    return VerificationBundle(claim_to_code=claim_payload, verification_report=report)
 
 
-def write_bundle(bundle: VerificationBundle, release_root: Path) -> dict[str, Path]:
-    """Write the three artefacts into the release tree."""
+def write_bundle(
+    bundle: VerificationBundle, release_root: Path
+) -> tuple[dict[str, Path], Manifest]:
+    """Write the three artefacts, hashing the tree at the moment it is complete.
+
+    The ordering is the point: the reports land first, then the manifest is built from the
+    tree that holds them, then the manifest lands. Building it earlier would record the
+    previous run's digest for every report it covers.
+    """
     root = Path(release_root)
-    return {
+    written = {
         "claim_to_code": write_json(root / CLAIM_TO_CODE, bundle.claim_to_code),
         "verification_report": write_json(root / VERIFICATION_REPORT, bundle.verification_report),
-        "manifest": write_json(root / MANIFEST, bundle.manifest),
     }
+    manifest = build_manifest(root)
+    written["manifest"] = write_json(root / MANIFEST, manifest.as_dict())
+    return written, manifest
 
 
 def verify_written_manifest(root: Path) -> dict[str, object]:
@@ -139,11 +143,6 @@ def verify_written_manifest(root: Path) -> dict[str, object]:
     return verify_manifest(recorded, Path(root))
 
 
-def manifest_of(root: Path) -> Manifest:
-    """Convenience wrapper so a caller does not have to import the manifest module."""
-    return build_manifest(Path(root))
-
-
 __all__ = [
     "CLAIM_TO_CODE",
     "ENGINEERING_DEFAULTS",
@@ -151,7 +150,6 @@ __all__ = [
     "VERIFICATION_REPORT",
     "VerificationBundle",
     "build_bundle",
-    "manifest_of",
     "verify_written_manifest",
     "write_bundle",
 ]
