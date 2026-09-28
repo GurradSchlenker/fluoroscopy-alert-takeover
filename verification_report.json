@@ -1461,15 +1461,10 @@
   "layer_two_execution": {
     "checks": [
       {
-        "detail": "both layers read and the table built",
+        "detail": "no cohort root was supplied",
         "name": "read_cohort_layers",
-        "status": "PASS",
-        "values": {
-          "alert_rate": 0.5,
-          "patients": 6,
-          "rows": 36,
-          "sites": 3
-        }
+        "status": "BLOCKED",
+        "values": {}
       },
       {
         "detail": "predicate logits must keep the frame grid",
@@ -1497,8 +1492,8 @@
         "name": "loss_and_backward",
         "status": "PASS",
         "values": {
-          "gradient_abs_sum": 305.498745881021,
-          "loss": 1.6541519165039062
+          "gradient_abs_sum": 325.50592849217355,
+          "loss": 1.650342583656311
         }
       },
       {
@@ -1528,106 +1523,34 @@
         "name": "single_batch_overfit",
         "status": "PASS",
         "values": {
-          "first": 1.6938451528549194,
-          "last": 0.10635634511709213,
-          "ratio": 0.06278988663032867
+          "first": 1.6811439990997314,
+          "last": 0.11140283197164536,
+          "ratio": 0.06626608549374868
         }
       },
       {
-        "detail": "two epochs on the staged sample, then score the same windows",
+        "detail": "no cohort root was supplied",
         "name": "training_loop",
-        "status": "PASS",
-        "values": {
-          "decreased": true,
-          "loss_first": 1.5277609348297119,
-          "loss_last": 1.2568147659301758,
-          "policy_edition_agreement": 0.5,
-          "predicate_dice": 0.9097345132743363,
-          "scored_windows": 36,
-          "steps": 10
-        }
+        "status": "BLOCKED",
+        "values": {}
       },
       {
-        "detail": "total must equal direct plus mediated exactly, since the two are one difference",
+        "detail": "no cohort root was supplied",
         "name": "decomposition_additivity",
-        "status": "PASS",
-        "values": {
-          "residual": 0.0
-        }
+        "status": "BLOCKED",
+        "values": {}
       },
       {
-        "detail": "with the target rule equal to the observed one the term must collapse to the AIPW arm mean",
+        "detail": "no cohort root was supplied",
         "name": "decomposition_reduces_to_arm_mean",
-        "status": "PASS",
-        "values": {
-          "arm_mean": 0.6211716314703168,
-          "gap": 0.0
-        }
+        "status": "BLOCKED",
+        "values": {}
       },
       {
-        "detail": "the fraction must equal the mediated component over the total",
+        "detail": "no cohort root was supplied",
         "name": "mediated_fraction_ratio",
-        "status": "PASS",
-        "values": {
-          "fraction": 3.474304461316171,
-          "hand_ratio": 3.474304461316171
-        }
-      },
-      {
-        "detail": "the pipeline's own decomposition must be additive",
-        "name": "pipeline_decomposition_additivity",
-        "status": "PASS",
-        "values": {
-          "residual": 0.0
-        }
-      },
-      {
-        "detail": "the reported fraction must equal the ratio of the reported components",
-        "name": "pipeline_mediated_fraction",
-        "status": "PASS",
-        "values": {
-          "gap": 0.0
-        }
-      },
-      {
-        "detail": "the recorded price must equal the gated minus ungated contrast",
-        "name": "pipeline_positivity_deficit_price",
-        "status": "PASS",
-        "values": {
-          "hand_pp": 0.0,
-          "price_pp": 0.0
-        }
-      },
-      {
-        "detail": "the sweep must return one point per multiplier; the direction is reported, not asserted",
-        "name": "pipeline_attenuation_sweep",
-        "status": "PASS",
-        "values": {
-          "fractions": [
-            3.474304461316171,
-            195734.39979785477,
-            224851521.5480868,
-            224851521.5480868
-          ],
-          "monotone_decreasing": false,
-          "multipliers": [
-            1.0,
-            2.0,
-            3.0,
-            4.0
-          ]
-        }
-      },
-      {
-        "detail": "two runs at the same seed must return identical headline numbers",
-        "name": "pipeline_determinism",
-        "status": "PASS",
-        "values": {
-          "first": 0.5168449118069796,
-          "fraction_first": 3.474304461316171,
-          "fraction_second": 3.474304461316171,
-          "second": 0.5168449118069796
-        }
+        "status": "BLOCKED",
+        "values": {}
       },
       {
         "detail": "the bracketed term of Eq. (2) against an independent transcription",
@@ -1777,15 +1700,15 @@
       }
     ],
     "code_status": "PASS",
-    "cohort_label": "the literal sample of tests/conftest.py (the cohort is not staged)",
-    "cohort_root_supplied": true,
+    "cohort_label": "no cohort staged",
+    "cohort_root_supplied": false,
     "overall_status": "PARTIALLY_VERIFIED",
     "summary": {
-      "blocked": 4.0,
-      "checks": 29.0,
+      "blocked": 9.0,
+      "checks": 24.0,
       "fail": 0.0,
       "not_run": 0.0,
-      "pass": 25.0
+      "pass": 15.0
     }
   },
   "notes": [
@@ -1797,8 +1720,8 @@
     "claims_checked": 70.0,
     "claims_with_code_failures": 0.0,
     "code_status": "PASS",
-    "execution_blocked": 4.0,
-    "execution_checks": 29.0,
+    "execution_blocked": 9.0,
+    "execution_checks": 24.0,
     "execution_code_status": "PASS",
     "execution_failures": 0.0,
     "execution_not_run": 0.0,
