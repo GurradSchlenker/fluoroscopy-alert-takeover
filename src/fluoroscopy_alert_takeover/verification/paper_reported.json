@@ -1,0 +1,155 @@
+{
+  "source": "Causal Evaluation of Fluoroscopy-Based Robot Navigation Alerts on Surgeon Takeover in Peripheral Vascular Intervention",
+  "note": "Values transcribed from the manuscript for the conformance audit. They are comparison targets only: nothing in this release is fitted to them, and the audit reports where they cannot be reconciled with each other.",
+  "cohort": {
+    "alert_withheld": 4503,
+    "alert_delivered": 5361,
+    "analytic_windows": 9864,
+    "identifiable_exposure_windows": 6912,
+    "identifiable_exposure_share_printed": 0.701,
+    "sites": {"Site A": 4182, "Site B": 3664, "Site C": 2946},
+    "regions": {"Region I": 7846, "Region II": 2946},
+    "complexity_classes": {"Class I": 2918, "Class II": 3441, "Class III": 2455},
+    "infrapopliteal": 1050,
+    "experience_bands": {"under_3_years": 2214, "3_to_8_years": 4106, "over_8_years": 3544}
+  },
+  "contrasts_pp": {
+    "takeover_aipw": {"point": 3.2, "low": 2.1, "high": 4.3},
+    "completion_aipw": {"point": 2.6, "low": 1.5, "high": 3.7},
+    "takeover_tmle": {"point": 3.1, "low": 2.0, "high": 4.2},
+    "completion_tmle": {"point": 2.5, "low": 1.4, "high": 3.6},
+    "takeover_ipw_only": {"point": 4.4, "low": 2.9, "high": 5.9},
+    "completion_ipw_only": {"point": 3.4, "low": 1.8, "high": 5.0},
+    "takeover_outcome_regression_only": {"point": 2.3, "low": 1.2, "high": 3.4},
+    "completion_outcome_regression_only": {"point": 1.8, "low": 0.6, "high": 3.0},
+    "takeover_ungated": {"point": 4.1, "low": 2.9, "high": 5.3},
+    "completion_ungated": {"point": 3.3, "low": 2.0, "high": 4.6},
+    "takeover_stochastic_intervention": {"point": 3.6, "low": 2.2, "high": 5.0},
+    "takeover_cluster_robust": {"point": 3.2, "low": 2.0, "high": 4.4},
+    "takeover_bootstrap": {"point": 3.2, "low": 2.1, "high": 4.3}
+  },
+  "decomposition_pp": {
+    "total": 2.6,
+    "direct": {"point": 0.7, "low": -0.1, "high": 1.5},
+    "mediated": {"point": 1.9, "low": 1.1, "high": 2.7},
+    "fraction": {"point": 0.73, "low": 0.58, "high": 0.88}
+  },
+  "ablation_summary": {
+    "positivity_deficit_price_pp": 0.9,
+    "positivity_deficit_price_completion_pp": 0.7,
+    "estimator_spread_singly_robust_pp": 2.1,
+    "estimator_spread_singly_robust_completion_pp": 1.6,
+    "nuisance_family_drift_pp": 0.2
+  },
+  "strata": {
+    "Class I": {"n": 2918, "takeover_pp": 2.4, "completion_pp": 2.0, "fraction": 0.52, "silent_override": 0.081},
+    "Class II": {"n": 3441, "takeover_pp": 4.6, "completion_pp": 3.3, "fraction": 0.71, "silent_override": 0.114},
+    "Class III": {"n": 2455, "takeover_pp": 3.1, "completion_pp": 2.4, "fraction": 0.88, "silent_override": 0.247},
+    "Infrapopliteal": {"n": 1050, "takeover_pp": 2.2, "completion_pp": 1.9, "fraction": 0.91, "silent_override": 0.312},
+    "Classes I-II pooled": {"takeover_pp": 3.6, "completion_pp": 2.7, "fraction": 0.54},
+    "Class III and infrapopliteal pooled": {"takeover_pp": 2.8, "completion_pp": 2.2, "fraction": 0.89},
+    "under_3_years": {"n": 2214, "takeover_pp": 4.9, "completion_pp": 3.6, "fraction": 0.81},
+    "3_to_8_years": {"n": 4106, "takeover_pp": 3.4, "completion_pp": 2.7, "fraction": 0.72},
+    "over_8_years": {"n": 3544, "takeover_pp": 2.5, "completion_pp": 2.0, "fraction": 0.58},
+    "Site A (Region I)": {"n": 4182, "takeover_pp": 3.6, "completion_pp": 2.9, "fraction": 0.75, "technical_success": 0.924},
+    "Site B (Region I)": {"n": 3664, "takeover_pp": 3.1, "completion_pp": 2.5, "fraction": 0.72, "technical_success": 0.913},
+    "Site C (Region II)": {"n": 2946, "takeover_pp": 2.6, "completion_pp": 2.2, "fraction": 0.70, "technical_success": 0.910},
+    "Region I pooled": {"n": 7846, "takeover_pp": 3.35, "completion_pp": 2.7, "fraction": 0.74, "technical_success": 0.919},
+    "Region II pooled": {"n": 2946, "takeover_pp": 2.6, "completion_pp": 2.2, "fraction": 0.70, "technical_success": 0.910},
+    "maximum_subgroup_gap_pp": 3.8,
+    "gap_ceiling_pp": 10.0
+  },
+  "heterogeneity": {
+    "cochran_q": 2.04,
+    "df": 2,
+    "p_value": 0.36,
+    "i_squared_percent": 21.4,
+    "tau_squared": 0.09,
+    "leave_one_site_out_range_pp": [3.0, 3.5]
+  },
+  "alert_model": {
+    "auroc": {"point": 0.918, "low": 0.909, "high": 0.927},
+    "auprc": {"point": 0.674, "low": 0.661, "high": 0.687},
+    "brier": 0.132,
+    "achievable_ceiling": 0.964,
+    "dice_clinical": 0.809,
+    "dice_phantom": 0.94,
+    "dice_cross_site": [0.798, 0.817],
+    "recall": 0.847,
+    "precision": 0.684,
+    "false_positive_override": {"point": 0.034, "low": 0.030, "high": 0.038}
+  },
+  "reader_study": {
+    "sensitivity": {"clinician_alone": 0.612, "alert_alone": 0.847, "team": 0.839},
+    "specificity": {"clinician_alone": 0.923, "alert_alone": 0.881, "team": 0.902},
+    "team_vs_alert_alone": {"point": 0.99, "low": 0.96, "high": 1.02},
+    "team_vs_clinician_alone": {"point": 1.37, "low": 1.29, "high": 1.45}
+  },
+  "falsification": {
+    "emergency_representation_7d": {"point": 0.1, "low": -0.8, "high": 1.0},
+    "unrelated_diagnosis_admission": {"point": 0.3, "low": -1.1, "high": 1.7},
+    "contralateral_limb_intervention": {"point": -0.2, "low": -1.4, "high": 1.0},
+    "preprocedure_imaging_count": {"point": 0.0, "low": -0.6, "high": 0.6},
+    "anaesthesia_related_event": {"point": 0.2, "low": -0.9, "high": 1.3},
+    "e_value_takeover": 2.06,
+    "e_value_takeover_ci_limit": 1.62,
+    "e_value_completion": 1.84,
+    "e_value_completion_ci_limit": 1.39,
+    "bias_factor_at_null_crossing": 1.41
+  },
+  "attenuation": {
+    "1.0": 0.73,
+    "2.0": 0.61,
+    "3.0": 0.44,
+    "4.0": 0.29
+  },
+  "operating_point": {
+    "thresholds": [0.15, 0.25, 0.35, 0.45, 0.55],
+    "emission_rate": [0.881, 0.746, 0.583, 0.417, 0.262],
+    "takeover_pp": [2.4, 3.2, 4.0, 3.6, 2.1],
+    "completion_pp": [1.9, 2.6, 3.1, 2.7, 1.6],
+    "silent_override": [0.276, 0.172, 0.114, 0.089, 0.064],
+    "fraction": [0.83, 0.77, 0.71, 0.66, 0.58],
+    "frozen_emission_rate": 0.583,
+    "frozen_takeover_pp": 3.2,
+    "frozen_silent_override": 0.114,
+    "frozen_fraction": 0.73,
+    "band_auroc": {"unrestricted": 0.918, "banded": 0.914, "difference": -0.004, "low": -0.011, "high": 0.003},
+    "band_override": {"unrestricted": 0.034, "banded": 0.021, "reduction": 0.382, "low": 0.216, "high": 0.527},
+    "volume_tertiles": {
+      "low": {"emission_rate": 0.528, "takeover_pp": 2.7, "completion_pp": 2.2, "silent_override": 0.148, "fraction": 0.68},
+      "mid": {"emission_rate": 0.581, "takeover_pp": 3.3, "completion_pp": 2.6, "silent_override": 0.116, "fraction": 0.72},
+      "high": {"emission_rate": 0.612, "takeover_pp": 3.9, "completion_pp": 3.0, "silent_override": 0.092, "fraction": 0.76}
+    },
+    "volume_cuts_per_year": [420, 780]
+  },
+  "safety": {
+    "technical_success": {"point": 0.917, "low": 0.912, "high": 0.922},
+    "treatment_success": {"point": 0.869, "low": 0.863, "high": 0.875},
+    "limb_event": {"point": 0.068, "low": 0.063, "high": 0.073},
+    "major_adverse_cardiac_event": {"point": 0.054, "low": 0.050, "high": 0.058},
+    "death": {"point": 0.019, "low": 0.016, "high": 0.022},
+    "amputation": {"point": 0.016, "low": 0.014, "high": 0.018},
+    "transfusion_or_surgery": {"point": 0.052, "low": 0.048, "high": 0.056},
+    "technical_success_floor": 0.88
+  },
+  "workflow": {
+    "fluoroscopy_time_min": {"mean": 19.2, "sd": 7.8, "difference": -0.6, "low": -1.9, "high": 0.7, "p": 0.37},
+    "contrast_volume_ml": {"mean": 84.7, "sd": 26.3, "difference": -3.1, "low": -8.4, "high": 2.2, "p": 0.25},
+    "procedure_duration_min": {"mean": 78.4, "sd": 29.6},
+    "integration_cost_s": 4.2,
+    "alert_policy_coverage": 0.941
+  },
+  "latency_table_a1": {
+    "unit": "ms",
+    "frame_ingest": {"median": 8.2, "low": 6.9, "high": 10.4, "throughput": 121.9, "memory_gb": 0.4},
+    "spatial_predicate_primary": {"median": 41.6, "low": 34.2, "high": 52.7, "throughput": 24.0, "memory_gb": 3.1},
+    "spatial_predicate_state_space": {"median": 27.4, "low": 22.8, "high": 33.9, "throughput": 36.5, "memory_gb": 2.4},
+    "alert_state_construction": {"median": 3.1, "low": 2.4, "high": 4.2, "throughput": 322.6, "memory_gb": 0.2},
+    "propensity_and_mediator_scoring": {"median": 1.8, "low": 1.5, "high": 2.3, "throughput": 555.6, "memory_gb": 0.3},
+    "end_to_end": {"median": 54.7, "low": 46.3, "high": 68.9, "throughput": 18.3, "memory_gb": 3.4},
+    "observed_action_latency": {"median": 2400.0, "low": 1600.0, "high": 3800.0},
+    "end_to_end_budget_share": 0.023,
+    "offline_analysis": {"minutes_per_10000": 18.4, "cores": 8}
+  }
+}

@@ -1,0 +1,22 @@
+# Supplementary: multi-centre and cross-region validation.
+#
+# Table A2, p. 26 and Sec. 4.7, p. 19. Each site is reported on its own, Region I is pooled
+# from its two sites, and the between-site heterogeneity statistics are formed from the
+# site-level estimates and their standard errors.
+
+protocol:
+  run_dir: runs/supplementary_site_validation
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+
+strata:
+  forest_trees: 200
+  forest_min_leaf: 50
+
+inference:
+  bootstrap_replicates: 1000

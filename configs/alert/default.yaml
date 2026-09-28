@@ -1,0 +1,24 @@
+# Alert policy
+#
+# Sec. 4.6, p. 19: the detection policy reads the navigation record and the fluoroscopic
+# stream. The manuscript prints the policy's latency, memory, Dice and discrimination, not
+# its architecture or its schedule, so every value below is a release engineering default.
+
+alert:
+  route: spatial_predicate            # (paper) the primary route of Table A1, p. 25
+  width: 32
+  depth: 4
+  frame_height: 64
+  frame_width: 64
+  window_frames: 8
+  frozen_threshold: 0.40
+  device: cpu
+  epochs: 30
+  batch_size: 8
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  warmup_epochs: 2
+  precision: fp32
+  checkpoint_every: 10
+  state_space_alternative: true       # (paper) Table A1, p. 25, linear-time alternative

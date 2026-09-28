@@ -1,0 +1,73 @@
+Third-party notices
+===================
+
+This release depends on the projects below. Their copyright remains with their authors; the
+entries record the version range this release is developed against and the licence each
+project publishes. No source from any of them is vendored into this repository.
+
+NumPy
+  copyright : NumPy Developers
+  licence   : BSD 3-Clause
+  url       : https://numpy.org/
+  used for  : array arithmetic throughout the cohort, estimators and evaluation layers
+
+SciPy
+  copyright : SciPy Developers
+  licence   : BSD 3-Clause
+  url       : https://scipy.org/
+  used for  : the normal and chi-squared distributions behind every interval and p-value
+
+scikit-learn
+  copyright : scikit-learn Developers
+  licence   : BSD 3-Clause
+  url       : https://scikit-learn.org/
+  used for  : the penalised logistic exposure model, the gradient-boosted and random-forest
+              nuisance families, and the ranking metrics
+
+PyTorch
+  copyright : Meta Platforms, Inc. and affiliates
+  licence   : BSD 3-Clause
+  url       : https://pytorch.org/
+  used for  : the alert policy, its spatial predicate, its training loop and the
+              linear-time state-space alternative
+
+PyYAML
+  copyright : Kirill Simonov and the PyYAML contributors
+  licence   : MIT
+  url       : https://pyyaml.org/
+  used for  : reading the configuration tree
+
+pytest
+  copyright : Holger Krekel and the pytest contributors
+  licence   : MIT
+  url       : https://docs.pytest.org/
+  used for  : the test suite
+
+Ruff
+  copyright : Astral Software Inc.
+  licence   : MIT
+  url       : https://docs.astral.sh/ruff/
+  used for  : linting and import ordering checks
+
+Black
+  copyright : the Black contributors
+  licence   : MIT
+  url       : https://black.readthedocs.io/
+  used for  : formatting
+
+isort
+  copyright : Timothy Crosley
+  licence   : MIT
+  url       : https://pycqa.github.io/isort/
+  used for  : import ordering
+
+mypy
+  copyright : Jukka Lehtosalo and the mypy contributors
+  licence   : MIT
+  url       : https://mypy-lang.org/
+  used for  : static type checking of the package
+
+The manuscript this release accompanies is the work of its own authors. Nothing in this
+repository reproduces its text, its figures or its tables; the transcriptions in
+src/fluoroscopy_alert_takeover/verification/paper_reported.json are numeric comparison
+targets, quoted for the purpose of checking this implementation against the article.

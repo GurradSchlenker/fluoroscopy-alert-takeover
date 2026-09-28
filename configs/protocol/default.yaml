@@ -1,0 +1,19 @@
+# Protocol
+#
+# Values the manuscript prints are marked (paper). Everything else is a release engineering
+# default, recorded in verification_report.json under engineering_defaults.
+
+protocol:
+  seed: 20260101                        # engineering default
+  run_dir: runs/primary                 # engineering default
+  log_level: INFO                       # engineering default
+  primary_outcome: takeover             # (paper) the primary estimand of the abstract
+  secondary_outcome: completion         # (paper) the secondary estimand of the abstract
+  mediator: hand_back                   # (paper) the hand-back channel of Sec. 2.5
+  window_length_s: 30.0                 # engineering default
+  window_stride_s: 30.0                 # engineering default
+  response_window_s: 30.0               # engineering default
+  consistency_floor: 0.90               # engineering default
+  follow_up: takeover_or_period_end     # (paper) Sec. 4.2, p. 14
+  time_zero: analysis_period_start      # (paper) Sec. 4.2, p. 14
+  window_multipliers: [1.0, 2.0, 3.0, 4.0]  # (paper) Table 4 Panel B, p. 11

@@ -1,0 +1,55 @@
+# Data endpoints of this release.
+#
+# The manuscript names no open dataset and prints no dataset URL. The one cohort it
+# analyses is a de-identified multi-site set of robot-assisted peripheral vascular
+# procedures whose Data availability statement says the raw records cannot be shared and may
+# be requested from the corresponding author. There is therefore no data URL to verify, and
+# none is asserted here: an entry would have to describe a resource that does not exist.
+#
+# The file is kept because it is where a reader looks, and because the check that produced it
+# is reproducible. The probe below was run from the authoring host on 2026-09-28, and every
+# line records its answer.
+
+# --- the analysed cohort -------------------------------------------------------------
+
+name     : multi-site de-identified robotic peripheral vascular intervention cohort
+version  : not stated in the manuscript
+licence  : not stated; held under site-level data-sharing agreements
+access   : not distributable at record level. Sec. 4.5, pp. 18-19 describes the two layers
+           and the linkage; the Data availability statement, p. 21, is the governing text
+url      : none. No URL describes this cohort.
+probe    : not applicable, and no substitute endpoint is offered in its place
+
+# --- record-level auxiliaries --------------------------------------------------------
+
+name     : cine database, navigation log, operating report, follow-up linkage
+version  : not stated
+licence  : the same site agreements
+access   : the same as the cohort; the release ships the reader, not the records
+url      : none
+
+# --- open endpoints named by the manuscript ------------------------------------------
+
+count    : 0
+detail   : the manuscript states that auxiliary public resources used in pretraining "have
+           been specifically named along with their versions, licenses, and access dates",
+           and then names none of them. There is nothing to resolve, and nothing has been
+           invented to fill the gap.
+
+# --- what was probed instead ---------------------------------------------------------
+
+# The only URLs this release can honestly offer are the reporting instruments the manuscript
+# does name, which are standards rather than data. They are listed so a reader can check
+# them, and they are marked as carrying no clinical records.
+
+https://www.equator-network.org/reporting-guidelines/tripod-statement/
+  name     : TRIPOD+AI reporting guideline
+  kind     : reporting standard, not a dataset
+  role     : named in Sec. 4.1, p. 14 as the reporting-transparency instrument
+  probe    : HTTP 200 on 2026-09-28
+
+# Not listed because the probe could not confirm a stable public landing page from this host
+# at the time of writing, and an unverified entry would be worse than a missing one:
+#   MI-CLAIM (Nature Medicine) and DECIDE-AI (Nature Medicine). Both are cited by the
+#   manuscript in Sec. 4.1, p. 14 with their bibliographic entries, and the bibliography
+#   above is the place to find them.

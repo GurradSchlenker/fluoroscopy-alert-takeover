@@ -1,0 +1,20 @@
+# Ablation: adjustment set.
+#
+# Table 2, p. 8, the full-history row and the three reduced-block rows. The certified region
+# is the primary one, so the price of reducing the history is not mixed with a change of
+# region.
+
+protocol:
+  run_dir: runs/ablation_adjustment_set
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10

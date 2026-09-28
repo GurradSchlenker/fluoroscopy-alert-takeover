@@ -1,0 +1,22 @@
+# Ablation: certified gate.
+#
+# Table 2, p. 8, the ungated row, together with the positivity-deficit price of Algorithm 1,
+# step 12, which is the gated contrast minus the ungated one. The grid is tightened so the
+# sweep resolves where the balance tolerance bites.
+
+protocol:
+  run_dir: runs/ablation_certified_gate
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10
+  ess_floor: 0.20
+  grid: [0.01, 0.03, 0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17, 0.19, 0.21, 0.23, 0.25]

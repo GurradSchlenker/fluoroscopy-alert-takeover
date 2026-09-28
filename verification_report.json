@@ -1,0 +1,1808 @@
+{
+  "engineering_defaults": {
+    "alert.optimiser": "AdamW at 3e-4 with cosine decay over 30 epochs at batch 8; no schedule is printed",
+    "alert.precision": "fp32; the Table A1 footprint is a memory figure, not a precision",
+    "estimator.clip_gamma": "0.01 propensity trimming bound, the gamma of Algorithm 3",
+    "estimator.n_folds": "5 patient-level folds; Algorithm 3 names K without printing it",
+    "estimator.outcome_learner": "logistic regression on the covariate history",
+    "evaluation.achievable_ceiling": "the ceiling is read as the AUROC of the reference channel on the same target",
+    "gate.ess_floor": "0.20 normalised effective sample size at the frozen gate",
+    "gate.grid": "25 gates on [0.01, 0.25]; Algorithm 1 names a grid G without printing it",
+    "gate.tolerance": "0.10 absolute standardised mean difference as kappa*",
+    "inference.bootstrap_replicates": "1,000 replicates, as printed in Table 4 Panel E",
+    "operating_point.abstention_high": "0.40 upper edge of the abstention band, not printed",
+    "operating_point.abstention_low": "0.30 lower edge of the abstention band, not printed",
+    "operating_point.burden_ceiling": "0.60 emission-rate ceiling of the operating-point criterion",
+    "operating_point.thresholds": "0.15, 0.25, 0.35, 0.45, 0.55, as printed in Table A3",
+    "protocol.consistency_floor": "0.90 share of windows with an identifiable exposure state",
+    "protocol.response_window_s": "30.0 s alert-to-response window; Sec. 2.5 names the interval without printing it",
+    "protocol.window_length_s": "30.0 s analysis period; the manuscript fixes the shape of the period, not its length",
+    "protocol.window_stride_s": "30.0 s stride, so the periods are disjoint and a follow-up cannot reach the next one",
+    "schema.case_mix": "age, sex, diabetes and chronic limb-threatening ischaemia enter the balance evaluation but not the block-level gate distance",
+    "schema.covariate_members": "the members of the four named blocks; the manuscript names the blocks only",
+    "strata.forest_max_depth": "4 levels",
+    "strata.forest_min_leaf": "50 rows per leaf",
+    "strata.forest_trees": "200 causal trees; Algorithm 4 names T without printing it"
+  },
+  "layer_one_paper_to_code": {
+    "claims": [
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C001",
+        "location": "Abstract, p. 1",
+        "missing_symbols": [],
+        "statement": "Primary estimand is the average causal effect of a fluoroscopy-derived alert on surgeon takeover, as an absolute risk difference from augmented inverse-probability weighting.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast",
+          "fluoroscopy_alert_takeover.protocol.strategies:TargetTrialProtocol"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C002",
+        "location": "Abstract, p. 1; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Takeover risk difference +3.2 pp (95% CI +2.1 to +4.3).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C003",
+        "location": "Abstract, p. 1; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Completion risk difference +2.6 pp (95% CI +1.5 to +3.7).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C004",
+        "location": "Abstract, p. 1; Table 1, p. 7; Sec. 2.5, p. 4",
+        "missing_symbols": [],
+        "statement": "Mediated fraction 0.73 (95% CI 0.58 to 0.88) through the surgeon's hand-back.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:mediated_fraction",
+          "fluoroscopy_alert_takeover.estimators.decomposition:cross_fitted_decomposition"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C005",
+        "location": "Abstract, p. 1; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Discrimination AUROC 0.918 with Brier score 0.132.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.evaluation.discrimination:evaluate"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "3.8 <= 10.0",
+          "expected": 10.0,
+          "kind": "compare",
+          "label": "gap_inside_ceiling",
+          "observed": 3.8,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C006",
+        "location": "Abstract, p. 1; Table 3, pp. 9-10",
+        "missing_symbols": [],
+        "statement": "The maximum subgroup gap stayed inside the pre-specified ceiling.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.gap:maximum_subgroup_gap"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "ratio of the two printed values",
+          "expected": 0.99,
+          "kind": "ratio",
+          "label": "team_vs_alert_alone_relative_risk",
+          "observed": 0.9905548996458087,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C007",
+        "location": "Abstract, p. 1; Sec. 2.8, p. 5; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "The human-plus-alert team matched, not exceeded, alert-alone.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.evaluation.reader_study:relative_risk"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C008",
+        "location": "Sec. 1, p. 2",
+        "missing_symbols": [],
+        "statement": "The study is framed as an evaluation and deployment problem for surgical AI rather than a detection problem.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.protocol.strategies:TargetTrialProtocol",
+          "fluoroscopy_alert_takeover.protocol.probes:consistency_probe"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C009",
+        "location": "Sec. 2.1, p. 2; Table 1, pp. 6-7",
+        "missing_symbols": [],
+        "statement": "Cohort characteristics by observed alert exposure, with the standardised mean difference before and after the certified-overlap restriction and weighting.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.reporting.tables:cohort_characteristics",
+          "fluoroscopy_alert_takeover.exposure.balance:standardised_mean_difference"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "largest printed characteristic is lesion_length",
+          "expected": 0.213,
+          "kind": "max_matches",
+          "label": "largest_unadjusted_smd",
+          "observed": 0.29,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C010",
+        "location": "Sec. 2.1, p. 3",
+        "missing_symbols": [],
+        "statement": "The largest simple difference before weighting was anatomic complexity, |SMD| = 0.213.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.exposure.balance:worst_row"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "largest printed value in the column",
+          "expected": 0.041,
+          "kind": "max_equals",
+          "label": "largest_adjusted_smd",
+          "observed": 0.041,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C011",
+        "location": "Sec. 2.1, p. 3",
+        "missing_symbols": [],
+        "statement": "After restriction and weighting the largest mean difference across the four blocks was 0.041.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.exposure.balance:block_distance"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C012",
+        "location": "Sec. 2.2, p. 3",
+        "missing_symbols": [],
+        "statement": "Dice coefficient 0.809 on the clinical fluoroscopic stream against 0.94 on the phantom.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.perception.dice:dice_coefficient"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C013",
+        "location": "Sec. 2.2, p. 3; Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "Cross-site perception consistency with Dice 0.798 and 0.817.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.perception.dice:per_site_dice"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "share of the printed denominator",
+          "expected": 0.701,
+          "kind": "share",
+          "label": "identifiable_exposure_share",
+          "observed": 0.7007299270072993,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C014",
+        "location": "Sec. 2.3, p. 3",
+        "missing_symbols": [],
+        "statement": "The consistency probe found 6,912 of 9,864 windows identifiable, 70.1%.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.protocol.probes:consistency_probe"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C015",
+        "location": "Sec. 2.3, p. 3; Table 4 Panel A, p. 11",
+        "missing_symbols": [],
+        "statement": "All five negative-control outcomes showed no association with alert delivery.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.falsification.negative_controls:negative_control_panel"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "E-value from the printed outcome rates",
+          "expected": 2.06,
+          "kind": "evalue_from_rates",
+          "label": "e_value_from_observed_rates",
+          "observed": 2.141516211203163,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C016",
+        "location": "Sec. 2.3, p. 3; Table 4 Panel C, p. 11",
+        "missing_symbols": [],
+        "statement": "E-value 2.06 for the takeover estimate and 1.62 at the confidence limit.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.falsification.evalue:e_value_risk_difference"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "1.41 == 1.165",
+          "expected": 1.165,
+          "kind": "compare",
+          "label": "bias_factor_at_null_crossing",
+          "observed": 1.41,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C017",
+        "location": "Table 4 Panel C, p. 11",
+        "missing_symbols": [],
+        "statement": "Bias factor at null crossing 1.41 for the takeover estimate.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.falsification.bias_factor:null_crossing"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "0.917 >= 0.88",
+          "expected": 0.88,
+          "kind": "compare",
+          "label": "technical_success_above_floor",
+          "observed": 0.917,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C018",
+        "location": "Sec. 2.4, p. 3; Sec. 4.10, p. 21",
+        "missing_symbols": [],
+        "statement": "Technical success must reach at least 88.0%; observed 91.7% (95% CI 91.2 to 92.2).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.reporting.success:success_criteria"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "size-weighted pooling of the site values",
+          "expected": 0.917,
+          "kind": "pooled_share",
+          "label": "pooled_technical_success",
+          "observed": 0.9164195700518903,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C019",
+        "location": "Sec. 2.4, p. 3; Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "Pooled site technical success 91.7% is consistent with 92.4%, 91.3% and 91.0% at the three sites.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.heterogeneity:pooled_estimate"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "sum of the printed parts",
+          "expected": 2.6,
+          "kind": "sum",
+          "label": "decomposition_additivity",
+          "observed": 2.5999999999999996,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C020",
+        "location": "Sec. 2.5, p. 4; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Decomposition: mediated +1.9 pp, direct +0.7 pp, total +2.6 pp.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:decompose"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "ratio of the two printed values",
+          "expected": 0.73,
+          "kind": "ratio",
+          "label": "mediated_fraction_from_components",
+          "observed": 0.7307692307692307,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C021",
+        "location": "Sec. 2.5, p. 4; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Mediated fraction 0.73 equals the mediated share of the total effect.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:mediated_fraction"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "first minus last of the printed sequence",
+          "expected": 0.0,
+          "kind": "monotone_decreasing",
+          "label": "window_attenuation_monotone",
+          "observed": -0.44,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C022",
+        "location": "Sec. 2.5, p. 4; Table 4 Panel B, p. 11",
+        "missing_symbols": [],
+        "statement": "The mediated fraction falls monotonically as the observation window is widened by factors of two, three and four.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.attenuation:window_attenuation"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "interval 0.58 to 0.88 against 0.5",
+          "expected": 0.5,
+          "kind": "interval_excludes",
+          "label": "fraction_interval_excludes_one_half",
+          "observed": 0.58,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C023",
+        "location": "Sec. 2.5, p. 4",
+        "missing_symbols": [],
+        "statement": "The mediated-fraction interval excludes one half, so the hand-back channel is not a rephrasing of the total.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:theta_null_test"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "interior maximum of the sequence",
+          "expected": 1.0,
+          "kind": "inverted_u",
+          "label": "complexity_effect_inverted_u",
+          "observed": 1.0,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C024",
+        "location": "Sec. 2.6, p. 4; Table 3, pp. 9-10",
+        "missing_symbols": [],
+        "statement": "The takeover effect follows an inverted U across anatomic complexity, peaking in the middle stratum.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:complexity_partition"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "first minus last of the printed sequence",
+          "expected": 0.0,
+          "kind": "monotone_increasing",
+          "label": "silent_override_gradient",
+          "observed": 0.23099999999999998,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C025",
+        "location": "Sec. 2.6, p. 5; Table 3, p. 9",
+        "missing_symbols": [],
+        "statement": "Silent over-ride rises with complexity: 8.1%, 11.4%, 24.7%, 31.2%.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:silent_override_rate"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C026",
+        "location": "Sec. 2.7, p. 5",
+        "missing_symbols": [],
+        "statement": "Fluoroscopy time 19.2 min (SD 7.8) with an adjusted difference of -0.6 min (95% CI -1.9 to +0.7; p = 0.37).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.procedure_metrics:workflow_contrast"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C027",
+        "location": "Sec. 2.7, p. 5",
+        "missing_symbols": [],
+        "statement": "Contrast volume 84.7 mL (SD 26.3) with an adjusted difference of -3.1 mL (95% CI -8.4 to +2.2; p = 0.25).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.procedure_metrics:describe"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C028",
+        "location": "Sec. 2.7, p. 5",
+        "missing_symbols": [],
+        "statement": "Median integration cost 4.2 s, and 94.1% alert-policy coverage.",
+        "status": "NOT_RUN",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.procedure_metrics:integration_cost"
+        ],
+        "unbound": "the coverage instrument is named without a definition and the table it points at carries latencies only",
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C029",
+        "location": "Sec. 2.8, p. 5; Table 1, p. 7",
+        "missing_symbols": [],
+        "statement": "Three-arm reader comparison: sensitivity 0.612 / 0.847 / 0.839 and specificity 0.923 / 0.881 / 0.902.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.evaluation.reader_study:reader_comparison"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "ratio of the two printed values",
+          "expected": 1.37,
+          "kind": "ratio",
+          "label": "team_vs_clinician_relative_risk",
+          "observed": 1.3709150326797386,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C030",
+        "location": "Table 1, p. 7; Sec. 2.8, p. 6",
+        "missing_symbols": [],
+        "statement": "Team versus clinician alone, relative risk 1.37 (95% CI 1.29 to 1.45).",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.evaluation.reader_study:relative_risk"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C031",
+        "location": "Sec. 2.9, p. 6",
+        "missing_symbols": [],
+        "statement": "Alert recall 0.847 and precision 0.684 at the frozen operating point.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.evaluation.discrimination:threshold_operating_point"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C032",
+        "location": "Sec. 2.9, p. 6; Table 4 Panel D, p. 12",
+        "missing_symbols": [],
+        "statement": "False alarms produce 3.4% false-positive over-ride.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.operating_point.abstention:abstention_band_comparison"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C033",
+        "location": "Sec. 2.10, p. 12; Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "Site-level takeover risk differences +3.6, +3.1 and +2.6 pp with no significant between-site heterogeneity.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.heterogeneity:heterogeneity_report"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "conventional I-squared from the printed Q and df",
+          "expected": 21.4,
+          "kind": "i_squared_from_q",
+          "label": "i_squared_from_cochran_q",
+          "observed": 1.960784313725492,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C034",
+        "location": "Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "Heterogeneity: Cochran Q = 2.04 (df = 2), p = 0.36, I2 = 21.4%, tau2 = 0.09.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.heterogeneity:i_squared"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "printed site estimates [3.6, 3.1, 2.6] against the stated range 3.0 to 3.5",
+          "expected": 3.5,
+          "kind": "range_covers",
+          "label": "leave_one_site_out_range",
+          "observed": 3.6,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C035",
+        "location": "Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "Leave-one-site-out takeover range +3.0 to +3.5 pp, with no configuration crossing the null.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.inference.alternatives:leave_one_site_out"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "index of the largest printed value",
+          "expected": 2.0,
+          "kind": "peak_index",
+          "label": "threshold_sweep_peak",
+          "observed": 2.0,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C036",
+        "location": "Sec. 2.11, p. 12; Table A3 Panel A, p. 27",
+        "missing_symbols": [],
+        "statement": "The threshold sweep runs from 88.1% to 26.2% emission and the causal contrast peaks at 0.35.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.operating_point.benefit_curve:causal_benefit_curve"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "two printed values",
+          "expected": 0.583,
+          "kind": "equal_values",
+          "label": "frozen_emission_matches_sweep_row",
+          "observed": 0.583,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C037",
+        "location": "Table A3 Panel A, p. 27",
+        "missing_symbols": [],
+        "statement": "The frozen setting reports the same emission rate as the 0.35 sweep row.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.operating_point.abstention:select_operating_point"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "relative reduction of the two proportions",
+          "expected": 0.382,
+          "kind": "relative_reduction",
+          "label": "band_override_reduction",
+          "observed": 0.38235294117647056,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C038",
+        "location": "Table 4 Panel D, p. 12",
+        "missing_symbols": [],
+        "statement": "The band policy holds AUROC parity and reduces the over-ride burden by 38.2%.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.operating_point.abstention:band_scores"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C039",
+        "location": "Table A3 Panel B, p. 27",
+        "missing_symbols": [],
+        "statement": "Site annual-volume tertiles are cut at 420 and 780 procedures per year.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:volume_tertile_partition"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      },
+      {
+        "arithmetic": {
+          "detail": "ratio of the two printed values",
+          "expected": 0.023,
+          "kind": "ratio",
+          "label": "end_to_end_budget_share",
+          "observed": 0.02279166666666667,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C040",
+        "location": "Table A1, p. 25",
+        "missing_symbols": [],
+        "statement": "The end-to-end alert path consumes 2.3% of the intra-procedural budget at the median.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.latency:budget_fraction"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C041",
+        "location": "Table A1, p. 25",
+        "missing_symbols": [],
+        "statement": "Per-stage median latencies and throughput for the two perception routes.",
+        "status": "NOT_RUN",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.latency:StageLedger"
+        ],
+        "unbound": "the caption does not say which layers constitute each stage, so the printed values are compared rather than reproduced",
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C042",
+        "location": "Table A1, p. 25",
+        "missing_symbols": [],
+        "statement": "Offline causal estimation takes 18.4 min per 10,000 procedures on 8 CPU cores.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.workflow.latency:offline_analysis_rate"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C043",
+        "location": "Eq. (1), p. 16",
+        "missing_symbols": [],
+        "statement": "Psi(a, Q) = E[ integral mu_a(H, m) Q(dm | H) ] with psi_dir, psi_med and theta defined from it.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:psi_functional"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C044",
+        "location": "Eq. (1), p. 16",
+        "missing_symbols": [],
+        "statement": "psi = psi_dir + psi_med exactly.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimands.interventional:additivity_residual"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C045",
+        "location": "Eq. (2), p. 17",
+        "missing_symbols": [],
+        "statement": "The one-step estimator with the exposure weight, the outcome residual and the two arm regressions.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.aipw:eq2_terms"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C046",
+        "location": "Algorithm 1, p. 16",
+        "missing_symbols": [],
+        "statement": "Balance-first exposure model with family selection, gate sweep, effective sample size, covariate-marginal distance and positivity-deficit price.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.overlap.gate:build_certified_overlap_gate",
+          "fluoroscopy_alert_takeover.exposure.model:fit_balance_first_exposure",
+          "fluoroscopy_alert_takeover.overlap.effective_sample_size:kish_effective_sample_size"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C047",
+        "location": "Algorithm 1, step 7, p. 16",
+        "missing_symbols": [],
+        "statement": "e_k = (sum pi)^2 / sum pi^2.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.overlap.effective_sample_size:kish_effective_sample_size"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "difference of the printed values",
+          "expected": 0.9,
+          "kind": "difference",
+          "label": "positivity_deficit_price_takeover",
+          "observed": 0.8999999999999995,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C048",
+        "location": "Algorithm 1, step 12, p. 16",
+        "missing_symbols": [],
+        "statement": "The positivity-deficit price is the gated contrast minus the ungated contrast.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.overlap.gate:positivity_deficit_price"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C049",
+        "location": "Algorithm 2, p. 16",
+        "missing_symbols": [],
+        "statement": "The pre-specified falsification pair: negative-control outcomes, an exposure-side probe, the E-value and the bias-factor curve.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.falsification.protocol:run_falsification"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C050",
+        "location": "Algorithm 3, p. 18",
+        "missing_symbols": [],
+        "statement": "Cross-fitted AIPW decomposition on patient-level folds, with the propensity clipped and the trimmed mass recorded.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.decomposition:cross_fitted_decomposition",
+          "fluoroscopy_alert_takeover.estimators.crossfit:clip_propensity"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C051",
+        "location": "Algorithm 3, step 9, p. 18",
+        "missing_symbols": [],
+        "statement": "theta is the ratio of the mediated to the total component with an influence-function interval.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.influence:ratio"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C052",
+        "location": "Algorithm 4, p. 18",
+        "missing_symbols": [],
+        "statement": "Honest-split causal forest: structural and estimation halves by patient, a causal tree on the covariates only, leaf estimates aggregated by leaf mass, and a gradient test across complexity classes.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.forest.causal_forest:HonestSplitCausalForest",
+          "fluoroscopy_alert_takeover.forest.honest_split:honest_split",
+          "fluoroscopy_alert_takeover.forest.gradient:monotone_gradient_test"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C053",
+        "location": "Algorithm 5, p. 20",
+        "missing_symbols": [],
+        "statement": "Causal benefit curve over an abstention-band grid, with the operating point selected and frozen by a pre-specified criterion.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.operating_point.benefit_curve:causal_benefit_curve",
+          "fluoroscopy_alert_takeover.operating_point.abstention:select_operating_point"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C054",
+        "location": "Sec. 4.3, p. 15",
+        "missing_symbols": [],
+        "statement": "Four identification assumptions, each with a probe, and the exposure state read from timestamped log events rather than a hidden score.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.protocol.probes:exchangeability_probe"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C055",
+        "location": "Sec. 4.4, p. 17",
+        "missing_symbols": [],
+        "statement": "The certified area modifies the estimand rather than purifying a cohort-level one.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.analysis.pipeline:AnalysisConfig"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C056",
+        "location": "Sec. 4.5, pp. 18-19",
+        "missing_symbols": [],
+        "statement": "The two data layers: the clinical record layer and the analytic person-window table, with linkage, leak prevention and version pinning.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.cohort.layout:CohortLayout",
+          "fluoroscopy_alert_takeover.cohort.builder:build_person_windows"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C057",
+        "location": "Sec. 4.6, p. 19",
+        "missing_symbols": [],
+        "statement": "The alert policy reads the navigation record and the fluoroscopic stream; four covariate blocks must be present before the gate opens.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.perception.spatial_predicate:AlertPolicyNet",
+          "fluoroscopy_alert_takeover.protocol.schema:COVARIATE_BLOCKS"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C058",
+        "location": "Sec. 4.7, p. 19",
+        "missing_symbols": [],
+        "statement": "Three validation levels: per-site reporting, leave-one-site-out, and site-disjoint evaluation, with per-site calibration slopes and intercepts.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.inference.alternatives:leave_one_site_out",
+          "fluoroscopy_alert_takeover.perception.calibration:recalibrate"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C059",
+        "location": "Sec. 4.9, pp. 20-21",
+        "missing_symbols": [],
+        "statement": "Influence-function intervals, site- and operator-level cluster-robust standard errors, bootstrap sensitivity, and two multiplicity families.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.inference.robust:cluster_robust_standard_error",
+          "fluoroscopy_alert_takeover.inference.bootstrap:bootstrap_summary",
+          "fluoroscopy_alert_takeover.multiplicity.corrections:two_family_report"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": {
+          "detail": "difference of the printed values",
+          "expected": 2.1,
+          "kind": "difference",
+          "label": "singly_robust_spread",
+          "observed": 2.1000000000000005,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C060",
+        "location": "Table 2, p. 8",
+        "missing_symbols": [],
+        "statement": "The two singly-robust estimators disagree by 2.1 pp and the doubly-robust estimate moves by less than 0.2 pp when a nuisance family is replaced.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.estimators.ablation:estimator_spread",
+          "fluoroscopy_alert_takeover.estimators.singly_robust:ipw_contrast"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "size-weighted mean of the strata",
+          "expected": 3.6,
+          "kind": "weighted_mean",
+          "label": "pooled_classes_one_two",
+          "observed": 3.5904701997169366,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C061",
+        "location": "Table 3, pp. 9-10",
+        "missing_symbols": [],
+        "statement": "The two pooled complexity rows are size-weighted combinations of their contributing strata.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.reporting.tables:pooled_stratum_rows"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "sum of the printed parts",
+          "expected": 9864.0,
+          "kind": "sum",
+          "label": "cohort_is_sum_of_groups",
+          "observed": 9864.0,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C062",
+        "location": "Table 1, pp. 6-7",
+        "missing_symbols": [],
+        "statement": "The analytic cohort is the sum of the two exposure groups.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.cohort.builder:cohort_digest"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "row 0 sums to 4503.0 against 4503.0; row 1 sums to 5361.0 against 5361.0",
+          "expected": 9864.0,
+          "kind": "row_sums",
+          "label": "region_partition_of_groups",
+          "observed": 9864.0,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C063",
+        "location": "Table 1, pp. 6-7",
+        "missing_symbols": [],
+        "statement": "Region I and Region II partition each exposure group.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.reporting.tables:observed_outcomes"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "row 0 sums to 4133.0 against 4503.0; row 1 sums to 4681.0 against 5361.0",
+          "expected": 9864.0,
+          "kind": "row_sums",
+          "label": "complexity_partition_of_groups",
+          "observed": 8814.0,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C064",
+        "location": "Table 1, pp. 6-7",
+        "missing_symbols": [],
+        "statement": "The complexity classes within each exposure group sum to that group.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:complexity_partition"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "sum of the printed parts",
+          "expected": 9864.0,
+          "kind": "sum",
+          "label": "site_strata_reconcile_with_cohort",
+          "observed": 10792.0,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C065",
+        "location": "Table 3, p. 9; Table A2, p. 26",
+        "missing_symbols": [],
+        "statement": "The site strata and the complexity classes describe the same analytic cohort.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:site_partition"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "sum of the printed parts",
+          "expected": 9864.0,
+          "kind": "sum",
+          "label": "experience_bands_partition_cohort",
+          "observed": 9864.0,
+          "status": "PASS"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C066",
+        "location": "Table 3, pp. 9-10",
+        "missing_symbols": [],
+        "statement": "Operator-experience bands partition the analytic cohort.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.partitions:experience_partition"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": {
+          "detail": "range of the printed subgroup estimates",
+          "expected": 3.8,
+          "kind": "range_equals",
+          "label": "maximum_subgroup_gap_from_estimates",
+          "observed": 2.7,
+          "status": "FAIL"
+        },
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "manuscript",
+        "id": "C067",
+        "location": "Table 3, pp. 9-10",
+        "missing_symbols": [],
+        "statement": "The maximum subgroup gap 3.8 pp follows from the printed stratum estimates.",
+        "status": "FAIL",
+        "symbols": [
+          "fluoroscopy_alert_takeover.strata.gap:maximum_subgroup_gap"
+        ],
+        "unbound": null,
+        "verification": "arithmetic"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C068",
+        "location": "Table 4 Panel E, p. 12",
+        "missing_symbols": [],
+        "statement": "Stochastic-intervention estimand, operator-level cluster-robust inference, 1,000 bootstrap replicates and the leave-one-site-out range.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.inference.alternatives:stochastic_intervention_contrast",
+          "fluoroscopy_alert_takeover.inference.alternatives:bootstrap_row"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C069",
+        "location": "Sec. 4.10, p. 21",
+        "missing_symbols": [],
+        "statement": "Pre-specified success criteria: technical success at or above 88.0%, a completion interval excluding the null, and a subgroup gap inside 10 pp.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.reporting.success:success_criteria"
+        ],
+        "unbound": null,
+        "verification": "execution"
+      },
+      {
+        "arithmetic": null,
+        "code_present": true,
+        "code_status": "PASS",
+        "failure_owner": "none",
+        "id": "C070",
+        "location": "Data availability, p. 21",
+        "missing_symbols": [],
+        "statement": "The raw cohort cannot be shared and may be requested from the primary author; no open dataset endpoint is named.",
+        "status": "PASS",
+        "symbols": [
+          "fluoroscopy_alert_takeover.cohort.layout:CohortLayout"
+        ],
+        "unbound": null,
+        "verification": "mapping"
+      }
+    ],
+    "code_status": "PASS",
+    "manuscript_findings": [
+      {
+        "detail": "largest printed characteristic is lesion_length",
+        "expected": 0.213,
+        "kind": "max_matches",
+        "label": "largest_unadjusted_smd",
+        "observed": 0.29,
+        "status": "FAIL"
+      },
+      {
+        "detail": "E-value from the printed outcome rates",
+        "expected": 2.06,
+        "kind": "evalue_from_rates",
+        "label": "e_value_from_observed_rates",
+        "observed": 2.141516211203163,
+        "status": "FAIL"
+      },
+      {
+        "detail": "1.41 == 1.165",
+        "expected": 1.165,
+        "kind": "compare",
+        "label": "bias_factor_at_null_crossing",
+        "observed": 1.41,
+        "status": "FAIL"
+      },
+      {
+        "detail": "conventional I-squared from the printed Q and df",
+        "expected": 21.4,
+        "kind": "i_squared_from_q",
+        "label": "i_squared_from_cochran_q",
+        "observed": 1.960784313725492,
+        "status": "FAIL"
+      },
+      {
+        "detail": "printed site estimates [3.6, 3.1, 2.6] against the stated range 3.0 to 3.5",
+        "expected": 3.5,
+        "kind": "range_covers",
+        "label": "leave_one_site_out_range",
+        "observed": 3.6,
+        "status": "FAIL"
+      },
+      {
+        "detail": "row 0 sums to 4133.0 against 4503.0; row 1 sums to 4681.0 against 5361.0",
+        "expected": 9864.0,
+        "kind": "row_sums",
+        "label": "complexity_partition_of_groups",
+        "observed": 8814.0,
+        "status": "FAIL"
+      },
+      {
+        "detail": "sum of the printed parts",
+        "expected": 9864.0,
+        "kind": "sum",
+        "label": "site_strata_reconcile_with_cohort",
+        "observed": 10792.0,
+        "status": "FAIL"
+      },
+      {
+        "detail": "range of the printed subgroup estimates",
+        "expected": 3.8,
+        "kind": "range_equals",
+        "label": "maximum_subgroup_gap_from_estimates",
+        "observed": 2.7,
+        "status": "FAIL"
+      }
+    ],
+    "overall_status": "PASS",
+    "summary": {
+      "claims": 70.0,
+      "code_failures": 0.0,
+      "fail": 8.0,
+      "manuscript_arithmetic_failures": 8.0,
+      "not_run": 2.0,
+      "pass": 60.0
+    }
+  },
+  "layer_two_execution": {
+    "checks": [
+      {
+        "detail": "both layers read and the table built",
+        "name": "read_cohort_layers",
+        "status": "PASS",
+        "values": {
+          "alert_rate": 0.5,
+          "patients": 6,
+          "rows": 36,
+          "sites": 3
+        }
+      },
+      {
+        "detail": "predicate logits must keep the frame grid",
+        "name": "tensor_forward_shapes",
+        "status": "PASS",
+        "values": {
+          "alert": [
+            2,
+            4
+          ],
+          "predicate": [
+            2,
+            4,
+            1,
+            32,
+            32
+          ],
+          "window_score": [
+            2
+          ]
+        }
+      },
+      {
+        "detail": "loss finite and gradients propagated to every parameter",
+        "name": "loss_and_backward",
+        "status": "PASS",
+        "values": {
+          "gradient_abs_sum": 305.498745881021,
+          "loss": 1.6541519165039062
+        }
+      },
+      {
+        "detail": "every parameter moved on the optimizer step",
+        "name": "parameter_update",
+        "status": "PASS",
+        "values": {
+          "moved": 26,
+          "trainable_tensors": 26
+        }
+      },
+      {
+        "detail": "saved weights reproduce the scored stream and carry the seed",
+        "name": "checkpoint_round_trip",
+        "status": "PASS",
+        "values": {
+          "epoch": 3,
+          "extra": {
+            "note": "round trip"
+          },
+          "identical": true,
+          "seed": 1234
+        }
+      },
+      {
+        "detail": "loss on a repeated batch must fall well below its first-epoch value",
+        "name": "single_batch_overfit",
+        "status": "PASS",
+        "values": {
+          "first": 1.6938451528549194,
+          "last": 0.10635634511709213,
+          "ratio": 0.06278988663032867
+        }
+      },
+      {
+        "detail": "two epochs on the staged sample, then score the same windows",
+        "name": "training_loop",
+        "status": "PASS",
+        "values": {
+          "decreased": true,
+          "loss_first": 1.5277609348297119,
+          "loss_last": 1.2568147659301758,
+          "policy_edition_agreement": 0.5,
+          "predicate_dice": 0.9097345132743363,
+          "scored_windows": 36,
+          "steps": 10
+        }
+      },
+      {
+        "detail": "total must equal direct plus mediated exactly, since the two are one difference",
+        "name": "decomposition_additivity",
+        "status": "PASS",
+        "values": {
+          "residual": 0.0
+        }
+      },
+      {
+        "detail": "with the target rule equal to the observed one the term must collapse to the AIPW arm mean",
+        "name": "decomposition_reduces_to_arm_mean",
+        "status": "PASS",
+        "values": {
+          "arm_mean": 0.6211716314703168,
+          "gap": 0.0
+        }
+      },
+      {
+        "detail": "the fraction must equal the mediated component over the total",
+        "name": "mediated_fraction_ratio",
+        "status": "PASS",
+        "values": {
+          "fraction": 3.474304461316171,
+          "hand_ratio": 3.474304461316171
+        }
+      },
+      {
+        "detail": "the pipeline's own decomposition must be additive",
+        "name": "pipeline_decomposition_additivity",
+        "status": "PASS",
+        "values": {
+          "residual": 0.0
+        }
+      },
+      {
+        "detail": "the reported fraction must equal the ratio of the reported components",
+        "name": "pipeline_mediated_fraction",
+        "status": "PASS",
+        "values": {
+          "gap": 0.0
+        }
+      },
+      {
+        "detail": "the recorded price must equal the gated minus ungated contrast",
+        "name": "pipeline_positivity_deficit_price",
+        "status": "PASS",
+        "values": {
+          "hand_pp": 0.0,
+          "price_pp": 0.0
+        }
+      },
+      {
+        "detail": "the sweep must return one point per multiplier; the direction is reported, not asserted",
+        "name": "pipeline_attenuation_sweep",
+        "status": "PASS",
+        "values": {
+          "fractions": [
+            3.474304461316171,
+            195734.39979785477,
+            224851521.5480868,
+            224851521.5480868
+          ],
+          "monotone_decreasing": false,
+          "multipliers": [
+            1.0,
+            2.0,
+            3.0,
+            4.0
+          ]
+        }
+      },
+      {
+        "detail": "two runs at the same seed must return identical headline numbers",
+        "name": "pipeline_determinism",
+        "status": "PASS",
+        "values": {
+          "first": 0.5168449118069796,
+          "fraction_first": 3.474304461316171,
+          "fraction_second": 3.474304461316171,
+          "second": 0.5168449118069796
+        }
+      },
+      {
+        "detail": "the bracketed term of Eq. (2) against an independent transcription",
+        "name": "eq2_matches_hand_written_terms",
+        "status": "PASS",
+        "values": {
+          "max_abs_gap": 0.0
+        }
+      },
+      {
+        "detail": "closed form (sum w)^2 / sum w^2",
+        "name": "kish_effective_sample_size",
+        "status": "PASS",
+        "values": {
+          "hand": 3.3333333333333335,
+          "produced": 3.3333333333333335
+        }
+      },
+      {
+        "detail": "the gate keeps exactly the rows with eps <= pi <= 1 - eps",
+        "name": "gate_mask_region",
+        "status": "PASS",
+        "values": {
+          "kept": 3
+        }
+      },
+      {
+        "detail": "the price is the gated contrast minus the ungated contrast",
+        "name": "positivity_deficit_price",
+        "status": "PASS",
+        "values": {
+          "price": 0.8999999999999995
+        }
+      },
+      {
+        "detail": "step-down adjustment against hand-computed values",
+        "name": "holm_step_down",
+        "status": "PASS",
+        "values": {
+          "hand": [
+            0.004,
+            0.06,
+            0.2,
+            0.08
+          ],
+          "produced": [
+            0.004,
+            0.06,
+            0.2,
+            0.08
+          ]
+        }
+      },
+      {
+        "detail": "step-up adjustment against hand-computed values",
+        "name": "benjamini_hochberg",
+        "status": "PASS",
+        "values": {
+          "hand": [
+            0.004,
+            0.04,
+            0.2,
+            0.05333333333333334
+          ],
+          "produced": [
+            0.004,
+            0.04,
+            0.2,
+            0.05333333333333334
+          ]
+        }
+      },
+      {
+        "detail": "score interval against the closed form at 95%",
+        "name": "wilson_interval",
+        "status": "PASS",
+        "values": {
+          "high": 0.3958485463334666,
+          "low": 0.2189488529493276,
+          "max_gap": 0.0
+        }
+      },
+      {
+        "detail": "equal-weight case has a closed form",
+        "name": "cochran_q",
+        "status": "PASS",
+        "values": {
+          "df": 2,
+          "p_value": 0.36787944117144245,
+          "pooled": 2.0,
+          "q": 2.0
+        }
+      },
+      {
+        "detail": "a perfect mask scores one",
+        "name": "dice_coefficient",
+        "status": "PASS",
+        "values": {
+          "dice": 1.0
+        }
+      },
+      {
+        "detail": "least-squares slope on the order index",
+        "name": "gradient_slope",
+        "status": "PASS",
+        "values": {
+          "hand": 0.30000000000000004,
+          "slope": 0.30000000000000004
+        }
+      },
+      {
+        "detail": "AUROC, AUPRC, Brier and the Dice of the spatial predicate are measured on the held-out clinical stream, which is held under site data-sharing agreements",
+        "name": "cohort_alert_model_discrimination",
+        "status": "BLOCKED",
+        "values": {
+          "printed_auprc": 0.674,
+          "printed_auroc": 0.918,
+          "printed_brier": 0.132,
+          "printed_dice": 0.809
+        }
+      },
+      {
+        "detail": "the printed contrasts cannot be recomputed without the cohort; the estimators that would produce them are exercised by the suite instead",
+        "name": "cohort_table1_contrasts",
+        "status": "BLOCKED",
+        "values": {
+          "printed_completion_pp": 2.6,
+          "printed_takeover_pp": 3.2
+        }
+      },
+      {
+        "detail": "the certified-overlap region and its retained share are properties of the cohort",
+        "name": "cohort_certified_region",
+        "status": "BLOCKED",
+        "values": {
+          "printed_identifiable_share": 0.701
+        }
+      },
+      {
+        "detail": "the per-stage latencies are wall-clock on the deployment configuration, which is not the host that produced this report",
+        "name": "deployment_latency_table_a1",
+        "status": "BLOCKED",
+        "values": {
+          "printed_budget_share": 0.023,
+          "printed_end_to_end_ms": 54.7
+        }
+      }
+    ],
+    "code_status": "PASS",
+    "cohort_label": "the literal sample of tests/conftest.py (the cohort is not staged)",
+    "cohort_root_supplied": true,
+    "overall_status": "PARTIALLY_VERIFIED",
+    "summary": {
+      "blocked": 4.0,
+      "checks": 29.0,
+      "fail": 0.0,
+      "not_run": 0.0,
+      "pass": 25.0
+    }
+  },
+  "notes": [
+    "A manuscript-arithmetic finding is a discrepancy inside the manuscript's own printed values. It is not a defect of this release and is reported with failure_owner set to 'manuscript'.",
+    "A blocked check needs the cohort, which is not distributed. Those checks are recorded as BLOCKED rather than omitted.",
+    "The execution layer reads a cohort root when one is staged. The tree ships no data-producing code, so the checks that need a table are recorded as BLOCKED here and are exercised by the suite instead."
+  ],
+  "summary": {
+    "claims_checked": 70.0,
+    "claims_with_code_failures": 0.0,
+    "code_status": "PASS",
+    "execution_blocked": 4.0,
+    "execution_checks": 29.0,
+    "execution_code_status": "PASS",
+    "execution_failures": 0.0,
+    "execution_not_run": 0.0,
+    "manuscript_arithmetic_findings": 8.0,
+    "overall_status": "PARTIALLY_VERIFIED"
+  }
+}

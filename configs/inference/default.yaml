@@ -1,0 +1,10 @@
+# Inference and multiplicity
+#
+# Sec. 4.9, pp. 20-21; Table 4 Panel E, p. 12.
+
+inference:
+  bootstrap_replicates: 1000            # (paper) Table 4 Panel E, p. 12
+  bootstrap_seed: 20260102              # engineering default
+  cluster_levels: [site, operator]      # (paper) Sec. 4.9, p. 20
+  primary_family: holm_step_down        # (paper) Sec. 4.9, p. 21
+  secondary_family: benjamini_hochberg  # (paper) Sec. 4.9, p. 21

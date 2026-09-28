@@ -1,0 +1,20 @@
+# Ablation: cross-fitting.
+#
+# Table 2, p. 8, the row "AIPW, single fold (no cross-fitting)". The ablation removes the
+# fold structure from both nuisance models, which is what makes it the informative contrast
+# against the cross-fitted primary row.
+
+protocol:
+  run_dir: runs/ablation_cross_fitting
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10

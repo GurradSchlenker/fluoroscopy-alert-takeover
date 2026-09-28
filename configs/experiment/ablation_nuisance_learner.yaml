@@ -1,0 +1,20 @@
+# Ablation: nuisance learner.
+#
+# Table 2, p. 8, the three AIPW rows that swap the nuisance family. The quantity of interest
+# is the drift of the doubly-robust estimate across families, not a ranking of them, so the
+# same region and adjustment set are reused.
+
+protocol:
+  run_dir: runs/ablation_nuisance_learner
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10

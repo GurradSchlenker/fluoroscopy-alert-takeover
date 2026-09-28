@@ -1,0 +1,37 @@
+# Primary analysis: the headline result of the manuscript.
+#
+# Table 1, pp. 6-7. Every value here is either printed by the manuscript or a named
+# engineering default, and the defaults are listed in verification_report.json under
+# engineering_defaults.
+
+protocol:
+  run_dir: runs/primary
+  primary_outcome: takeover
+  secondary_outcome: completion
+  mediator: hand_back
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10
+  ess_floor: 0.20
+
+strata:
+  forest_trees: 200
+  forest_min_leaf: 50
+  forest_max_depth: 4
+
+operating_point:
+  thresholds: [0.15, 0.25, 0.35, 0.45, 0.55]
+  abstention_low: 0.30
+  abstention_high: 0.40
+
+inference:
+  bootstrap_replicates: 1000

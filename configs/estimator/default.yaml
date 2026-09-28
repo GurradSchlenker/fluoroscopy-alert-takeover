@@ -1,0 +1,26 @@
+# Estimator family
+#
+# Eq. (2), p. 17; Table 2, p. 8. The manuscript prints the estimator family and the rows of
+# the ablation but not the fold count or the trimming bound, so those two are release
+# engineering defaults.
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+  estimators_printed:                 # (paper) Table 2, p. 8
+    - aipw
+    - tmle
+    - ipw
+    - outcome_regression
+  adjustment_sets_printed:            # (paper) Table 2, p. 8
+    - full_history
+    - imaging_only
+    - workflow_only
+    - operator_only
+  nuisance_families_printed:          # (paper) Table 2, p. 8
+    - glm
+    - gradient_boosted
+    - random_forest
+  cross_fitting_printed: true         # (paper) Algorithm 3, p. 18

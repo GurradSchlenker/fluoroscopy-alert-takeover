@@ -1,0 +1,20 @@
+# Sensitivity: inference choice.
+#
+# Table 4 Panel E, p. 12. Four ways of attaching uncertainty to the same contrast: the
+# stochastic-intervention estimand, operator-level clustering, the bootstrap, and holding
+# one site out. All four read the same region and the same nuisance fits.
+
+protocol:
+  run_dir: runs/sensitivity_inference
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+
+inference:
+  bootstrap_replicates: 1000
+  bootstrap_seed: 20260102

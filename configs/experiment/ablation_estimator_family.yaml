@@ -1,0 +1,21 @@
+# Ablation: estimator family.
+#
+# Table 2, p. 8, the four estimator rows. The certified region, the adjustment set and the
+# nuisance family are held at the primary specification, because the caption states that
+# only the estimator or the adjustment set changes between rows. The four estimators are
+# produced by the ablation grid of fluoroscopy_alert_takeover.estimators.ablation.
+
+protocol:
+  run_dir: runs/ablation_estimator_family
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+  outcome_learner: glm
+  run_ablation: true
+
+gate:
+  tolerance: 0.10

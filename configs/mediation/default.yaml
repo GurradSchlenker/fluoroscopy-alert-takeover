@@ -1,0 +1,14 @@
+# Mediation
+#
+# Eq. (1), p. 16 and Sec. 4.4, p. 17. The manuscript fixes the interventional analogue and
+# the four mediator adjustment sets; the window multipliers are printed in Table 4 Panel B.
+
+mediation:
+  estimand: interventional_analogue   # (paper) Sec. 4.4, p. 17
+  multipliers: [1.0, 2.0, 3.0, 4.0]   # (paper) Table 4 Panel B, p. 11
+  mediator_adjustment_sets:           # (paper) Sec. 4.4, p. 17
+    - complexity_domain
+    - intervention_field
+    - skill_group
+    - application_segments
+  no_post_outcome_variable: true      # (paper) Sec. 4.4, p. 17

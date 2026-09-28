@@ -1,0 +1,21 @@
+# Strata and the honest-split causal forest
+#
+# Table 3, pp. 9-10; Algorithm 4, p. 18. The strata and their boundaries are printed; the
+# tree count and the leaf floor are named without values.
+
+strata:
+  complexity_classes: [1, 2, 3]               # (paper) Table 3, p. 9
+  experience_bands:
+    - [0.0, 3.0]                              # (paper) Table 3, p. 10, "under 3 years"
+    - [3.0, 8.0]                              # (paper) Table 3, p. 10, "3 to 8 years"
+    - [8.0, 999.0]                            # (paper) Table 3, p. 10, "over 8 years"
+  pooled_rows:                                # (paper) Table 3, pp. 9-10
+    - [Class I, Class II]
+    - [Class III, Infrapopliteal]
+  panels: [complexity, vessel_bed, operator_experience, site, region]
+  forest_trees: 200
+  forest_min_leaf: 50
+  forest_max_depth: 4
+  gap_ceiling_pp: 10.0                        # (paper) Table 3, p. 10
+  alpha: 0.05                                 # (paper) Sec. 4.9, p. 21
+  fdr: 0.05                                   # (paper) Sec. 4.9, p. 21

@@ -1,0 +1,18 @@
+# Sensitivity: unmeasured confounding.
+#
+# Table 4 Panel C, p. 11. The E-value is a property of the contrast; the bias-factor curve
+# is swept over the grid below, which is shortened here so the curve resolves near the
+# crossing rather than far above it.
+
+protocol:
+  run_dir: runs/sensitivity_bias_factor
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+
+falsification:
+  gamma_grid: [1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.35, 1.40, 1.45, 1.50]

@@ -1,0 +1,18 @@
+# Supplementary: case-volume dose-response.
+#
+# Table A3 Panel B, p. 27. Annual site volume is stratified at the printed tertile
+# boundaries; the boundaries themselves live in the strata config.
+
+protocol:
+  run_dir: runs/supplementary_volume_tertiles
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+
+strata:
+  forest_trees: 200
+  forest_min_leaf: 50

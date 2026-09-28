@@ -1,0 +1,49 @@
+# Smoke configuration.
+#
+# This file is used by the unit tests only. It shrinks the guard rails of the analysis so a
+# full pass fits in a test session; it is not an analysis setting and must not be used for
+# any reported number. Use configs/experiment/primary.yaml for the reported analysis.
+
+protocol:
+  run_dir: runs/smoke
+  window_length_s: 30.0
+  window_stride_s: 30.0
+  response_window_s: 30.0
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 3
+  clip_gamma: 0.02
+  outcome_learner: glm
+  run_ablation: false
+
+gate:
+  tolerance: 0.25
+  ess_floor: 0.10
+  grid: [0.02, 0.06, 0.10, 0.14, 0.18]
+
+strata:
+  forest_trees: 8
+  forest_min_leaf: 20
+  forest_max_depth: 2
+
+operating_point:
+  thresholds: [0.30, 0.40, 0.50]
+  abstention_low: 0.35
+  abstention_high: 0.45
+
+inference:
+  bootstrap_replicates: 50
+
+falsification:
+  gamma_grid: [1.00, 1.10, 1.20]
+
+alert:
+  epochs: 2
+  batch_size: 8
+  frame_height: 32
+  frame_width: 32
+  window_frames: 4
+  checkpoint_every: 1

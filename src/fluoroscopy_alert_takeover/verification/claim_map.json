@@ -1,0 +1,763 @@
+{
+  "note": "Paper to code map. Every entry names the location in the manuscript, the symbols that carry it, and how it is checked. verification kind: 'mapping' means the symbols must exist and are read from the module; 'arithmetic' adds an internal-consistency check of the printed values; 'execution' means the second verification layer must run the code path.",
+  "claims": [
+    {
+      "id": "C001",
+      "location": "Abstract, p. 1",
+      "statement": "Primary estimand is the average causal effect of a fluoroscopy-derived alert on surgeon takeover, as an absolute risk difference from augmented inverse-probability weighting.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast",
+        "fluoroscopy_alert_takeover.protocol.strategies:TargetTrialProtocol"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C002",
+      "location": "Abstract, p. 1; Table 1, p. 7",
+      "statement": "Takeover risk difference +3.2 pp (95% CI +2.1 to +4.3).",
+      "symbols": ["fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast"],
+      "verification": "mapping"
+    },
+    {
+      "id": "C003",
+      "location": "Abstract, p. 1; Table 1, p. 7",
+      "statement": "Completion risk difference +2.6 pp (95% CI +1.5 to +3.7).",
+      "symbols": ["fluoroscopy_alert_takeover.estimators.aipw:aipw_contrast"],
+      "verification": "mapping"
+    },
+    {
+      "id": "C004",
+      "location": "Abstract, p. 1; Table 1, p. 7; Sec. 2.5, p. 4",
+      "statement": "Mediated fraction 0.73 (95% CI 0.58 to 0.88) through the surgeon's hand-back.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.estimands.interventional:mediated_fraction",
+        "fluoroscopy_alert_takeover.estimators.decomposition:cross_fitted_decomposition"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C005",
+      "location": "Abstract, p. 1; Table 1, p. 7",
+      "statement": "Discrimination AUROC 0.918 with Brier score 0.132.",
+      "symbols": ["fluoroscopy_alert_takeover.evaluation.discrimination:evaluate"],
+      "verification": "execution"
+    },
+    {
+      "id": "C006",
+      "location": "Abstract, p. 1; Table 3, pp. 9-10",
+      "statement": "The maximum subgroup gap stayed inside the pre-specified ceiling.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.gap:maximum_subgroup_gap"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "compare",
+        "left": 3.8,
+        "relation": "<=",
+        "right": 10.0,
+        "label": "gap_inside_ceiling"
+      }
+    },
+    {
+      "id": "C007",
+      "location": "Abstract, p. 1; Sec. 2.8, p. 5; Table 1, p. 7",
+      "statement": "The human-plus-alert team matched, not exceeded, alert-alone.",
+      "symbols": ["fluoroscopy_alert_takeover.evaluation.reader_study:relative_risk"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "ratio",
+        "numerator": 0.839,
+        "denominator": 0.847,
+        "expected": 0.99,
+        "tolerance": 0.006,
+        "label": "team_vs_alert_alone_relative_risk"
+      }
+    },
+    {
+      "id": "C008",
+      "location": "Sec. 1, p. 2",
+      "statement": "The study is framed as an evaluation and deployment problem for surgical AI rather than a detection problem.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.protocol.strategies:TargetTrialProtocol",
+        "fluoroscopy_alert_takeover.protocol.probes:consistency_probe"
+      ],
+      "verification": "mapping"
+    },
+    {
+      "id": "C009",
+      "location": "Sec. 2.1, p. 2; Table 1, pp. 6-7",
+      "statement": "Cohort characteristics by observed alert exposure, with the standardised mean difference before and after the certified-overlap restriction and weighting.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.reporting.tables:cohort_characteristics",
+        "fluoroscopy_alert_takeover.exposure.balance:standardised_mean_difference"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C010",
+      "location": "Sec. 2.1, p. 3",
+      "statement": "The largest simple difference before weighting was anatomic complexity, |SMD| = 0.213.",
+      "symbols": ["fluoroscopy_alert_takeover.exposure.balance:worst_row"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "max_matches",
+        "values": {"age": 0.041, "lesion_length": 0.290, "complexity": 0.213, "calcification": 0.111},
+        "expected_key": "complexity",
+        "label": "largest_unadjusted_smd"
+      }
+    },
+    {
+      "id": "C011",
+      "location": "Sec. 2.1, p. 3",
+      "statement": "After restriction and weighting the largest mean difference across the four blocks was 0.041.",
+      "symbols": ["fluoroscopy_alert_takeover.exposure.balance:block_distance"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "max_equals",
+        "values": [0.012, 0.003, 0.004, 0.009, 0.041, 0.018, 0.026, 0.038, 0.014, 0.003],
+        "expected": 0.041,
+        "tolerance": 0.0005,
+        "label": "largest_adjusted_smd"
+      }
+    },
+    {
+      "id": "C012",
+      "location": "Sec. 2.2, p. 3",
+      "statement": "Dice coefficient 0.809 on the clinical fluoroscopic stream against 0.94 on the phantom.",
+      "symbols": ["fluoroscopy_alert_takeover.perception.dice:dice_coefficient"],
+      "verification": "execution"
+    },
+    {
+      "id": "C013",
+      "location": "Sec. 2.2, p. 3; Table A2, p. 26",
+      "statement": "Cross-site perception consistency with Dice 0.798 and 0.817.",
+      "symbols": ["fluoroscopy_alert_takeover.perception.dice:per_site_dice"],
+      "verification": "execution"
+    },
+    {
+      "id": "C014",
+      "location": "Sec. 2.3, p. 3",
+      "statement": "The consistency probe found 6,912 of 9,864 windows identifiable, 70.1%.",
+      "symbols": ["fluoroscopy_alert_takeover.protocol.probes:consistency_probe"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "share",
+        "part": 6912,
+        "whole": 9864,
+        "expected": 0.701,
+        "tolerance": 0.0006,
+        "label": "identifiable_exposure_share"
+      }
+    },
+    {
+      "id": "C015",
+      "location": "Sec. 2.3, p. 3; Table 4 Panel A, p. 11",
+      "statement": "All five negative-control outcomes showed no association with alert delivery.",
+      "symbols": ["fluoroscopy_alert_takeover.falsification.negative_controls:negative_control_panel"],
+      "verification": "execution"
+    },
+    {
+      "id": "C016",
+      "location": "Sec. 2.3, p. 3; Table 4 Panel C, p. 11",
+      "statement": "E-value 2.06 for the takeover estimate and 1.62 at the confidence limit.",
+      "symbols": ["fluoroscopy_alert_takeover.falsification.evalue:e_value_risk_difference"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "evalue_from_rates",
+        "exposed_rate": 0.271,
+        "unexposed_rate": 0.194,
+        "expected": 2.06,
+        "tolerance": 0.02,
+        "label": "e_value_from_observed_rates"
+      }
+    },
+    {
+      "id": "C017",
+      "location": "Table 4 Panel C, p. 11",
+      "statement": "Bias factor at null crossing 1.41 for the takeover estimate.",
+      "symbols": ["fluoroscopy_alert_takeover.falsification.bias_factor:null_crossing"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "compare",
+        "left": 1.41,
+        "relation": "==",
+        "right": 1.165,
+        "tolerance": 0.001,
+        "label": "bias_factor_at_null_crossing"
+      }
+    },
+    {
+      "id": "C018",
+      "location": "Sec. 2.4, p. 3; Sec. 4.10, p. 21",
+      "statement": "Technical success must reach at least 88.0%; observed 91.7% (95% CI 91.2 to 92.2).",
+      "symbols": ["fluoroscopy_alert_takeover.reporting.success:success_criteria"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "compare",
+        "left": 0.917,
+        "relation": ">=",
+        "right": 0.88,
+        "label": "technical_success_above_floor"
+      }
+    },
+    {
+      "id": "C019",
+      "location": "Sec. 2.4, p. 3; Table A2, p. 26",
+      "statement": "Pooled site technical success 91.7% is consistent with 92.4%, 91.3% and 91.0% at the three sites.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.heterogeneity:pooled_estimate"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "pooled_share",
+        "parts": [3864, 3345, 2681],
+        "sizes": [4182, 3664, 2946],
+        "expected": 0.917,
+        "tolerance": 0.001,
+        "label": "pooled_technical_success"
+      }
+    },
+    {
+      "id": "C020",
+      "location": "Sec. 2.5, p. 4; Table 1, p. 7",
+      "statement": "Decomposition: mediated +1.9 pp, direct +0.7 pp, total +2.6 pp.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.interventional:decompose"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "sum",
+        "values": [1.9, 0.7],
+        "expected": 2.6,
+        "tolerance": 0.001,
+        "label": "decomposition_additivity"
+      }
+    },
+    {
+      "id": "C021",
+      "location": "Sec. 2.5, p. 4; Table 1, p. 7",
+      "statement": "Mediated fraction 0.73 equals the mediated share of the total effect.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.interventional:mediated_fraction"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "ratio",
+        "numerator": 1.9,
+        "denominator": 2.6,
+        "expected": 0.73,
+        "tolerance": 0.005,
+        "label": "mediated_fraction_from_components"
+      }
+    },
+    {
+      "id": "C022",
+      "location": "Sec. 2.5, p. 4; Table 4 Panel B, p. 11",
+      "statement": "The mediated fraction falls monotonically as the observation window is widened by factors of two, three and four.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.attenuation:window_attenuation"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "monotone_decreasing",
+        "values": [0.73, 0.61, 0.44, 0.29],
+        "label": "window_attenuation_monotone"
+      }
+    },
+    {
+      "id": "C023",
+      "location": "Sec. 2.5, p. 4",
+      "statement": "The mediated-fraction interval excludes one half, so the hand-back channel is not a rephrasing of the total.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.interventional:theta_null_test"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "interval_excludes",
+        "low": 0.58,
+        "high": 0.88,
+        "value": 0.5,
+        "label": "fraction_interval_excludes_one_half"
+      }
+    },
+    {
+      "id": "C024",
+      "location": "Sec. 2.6, p. 4; Table 3, pp. 9-10",
+      "statement": "The takeover effect follows an inverted U across anatomic complexity, peaking in the middle stratum.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:complexity_partition"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "inverted_u",
+        "values": [2.4, 4.6, 3.1],
+        "label": "complexity_effect_inverted_u"
+      }
+    },
+    {
+      "id": "C025",
+      "location": "Sec. 2.6, p. 5; Table 3, p. 9",
+      "statement": "Silent over-ride rises with complexity: 8.1%, 11.4%, 24.7%, 31.2%.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:silent_override_rate"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "monotone_increasing",
+        "values": [0.081, 0.114, 0.247, 0.312],
+        "label": "silent_override_gradient"
+      }
+    },
+    {
+      "id": "C026",
+      "location": "Sec. 2.7, p. 5",
+      "statement": "Fluoroscopy time 19.2 min (SD 7.8) with an adjusted difference of -0.6 min (95% CI -1.9 to +0.7; p = 0.37).",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.procedure_metrics:workflow_contrast"],
+      "verification": "execution"
+    },
+    {
+      "id": "C027",
+      "location": "Sec. 2.7, p. 5",
+      "statement": "Contrast volume 84.7 mL (SD 26.3) with an adjusted difference of -3.1 mL (95% CI -8.4 to +2.2; p = 0.25).",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.procedure_metrics:describe"],
+      "verification": "execution"
+    },
+    {
+      "id": "C028",
+      "location": "Sec. 2.7, p. 5",
+      "statement": "Median integration cost 4.2 s, and 94.1% alert-policy coverage.",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.procedure_metrics:integration_cost"],
+      "verification": "execution",
+      "unbound": "the coverage instrument is named without a definition and the table it points at carries latencies only"
+    },
+    {
+      "id": "C029",
+      "location": "Sec. 2.8, p. 5; Table 1, p. 7",
+      "statement": "Three-arm reader comparison: sensitivity 0.612 / 0.847 / 0.839 and specificity 0.923 / 0.881 / 0.902.",
+      "symbols": ["fluoroscopy_alert_takeover.evaluation.reader_study:reader_comparison"],
+      "verification": "execution"
+    },
+    {
+      "id": "C030",
+      "location": "Table 1, p. 7; Sec. 2.8, p. 6",
+      "statement": "Team versus clinician alone, relative risk 1.37 (95% CI 1.29 to 1.45).",
+      "symbols": ["fluoroscopy_alert_takeover.evaluation.reader_study:relative_risk"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "ratio",
+        "numerator": 0.839,
+        "denominator": 0.612,
+        "expected": 1.37,
+        "tolerance": 0.006,
+        "label": "team_vs_clinician_relative_risk"
+      }
+    },
+    {
+      "id": "C031",
+      "location": "Sec. 2.9, p. 6",
+      "statement": "Alert recall 0.847 and precision 0.684 at the frozen operating point.",
+      "symbols": ["fluoroscopy_alert_takeover.evaluation.discrimination:threshold_operating_point"],
+      "verification": "execution"
+    },
+    {
+      "id": "C032",
+      "location": "Sec. 2.9, p. 6; Table 4 Panel D, p. 12",
+      "statement": "False alarms produce 3.4% false-positive over-ride.",
+      "symbols": ["fluoroscopy_alert_takeover.operating_point.abstention:abstention_band_comparison"],
+      "verification": "execution"
+    },
+    {
+      "id": "C033",
+      "location": "Sec. 2.10, p. 12; Table A2, p. 26",
+      "statement": "Site-level takeover risk differences +3.6, +3.1 and +2.6 pp with no significant between-site heterogeneity.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.heterogeneity:heterogeneity_report"],
+      "verification": "execution"
+    },
+    {
+      "id": "C034",
+      "location": "Table A2, p. 26",
+      "statement": "Heterogeneity: Cochran Q = 2.04 (df = 2), p = 0.36, I2 = 21.4%, tau2 = 0.09.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.heterogeneity:i_squared"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "i_squared_from_q",
+        "q": 2.04,
+        "df": 2,
+        "expected": 21.4,
+        "tolerance": 0.2,
+        "label": "i_squared_from_cochran_q"
+      }
+    },
+    {
+      "id": "C035",
+      "location": "Table A2, p. 26",
+      "statement": "Leave-one-site-out takeover range +3.0 to +3.5 pp, with no configuration crossing the null.",
+      "symbols": ["fluoroscopy_alert_takeover.inference.alternatives:leave_one_site_out"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "range_covers",
+        "values": [3.6, 3.1, 2.6],
+        "low": 3.0,
+        "high": 3.5,
+        "label": "leave_one_site_out_range"
+      }
+    },
+    {
+      "id": "C036",
+      "location": "Sec. 2.11, p. 12; Table A3 Panel A, p. 27",
+      "statement": "The threshold sweep runs from 88.1% to 26.2% emission and the causal contrast peaks at 0.35.",
+      "symbols": ["fluoroscopy_alert_takeover.operating_point.benefit_curve:causal_benefit_curve"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "peak_index",
+        "values": [2.4, 3.2, 4.0, 3.6, 2.1],
+        "expected_index": 2,
+        "label": "threshold_sweep_peak"
+      }
+    },
+    {
+      "id": "C037",
+      "location": "Table A3 Panel A, p. 27",
+      "statement": "The frozen setting reports the same emission rate as the 0.35 sweep row.",
+      "symbols": ["fluoroscopy_alert_takeover.operating_point.abstention:select_operating_point"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "equal_values",
+        "left": 0.583,
+        "right": 0.583,
+        "label": "frozen_emission_matches_sweep_row"
+      }
+    },
+    {
+      "id": "C038",
+      "location": "Table 4 Panel D, p. 12",
+      "statement": "The band policy holds AUROC parity and reduces the over-ride burden by 38.2%.",
+      "symbols": ["fluoroscopy_alert_takeover.operating_point.abstention:band_scores"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "relative_reduction",
+        "before": 0.034,
+        "after": 0.021,
+        "expected": 0.382,
+        "tolerance": 0.001,
+        "label": "band_override_reduction"
+      }
+    },
+    {
+      "id": "C039",
+      "location": "Table A3 Panel B, p. 27",
+      "statement": "Site annual-volume tertiles are cut at 420 and 780 procedures per year.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:volume_tertile_partition"],
+      "verification": "mapping"
+    },
+    {
+      "id": "C040",
+      "location": "Table A1, p. 25",
+      "statement": "The end-to-end alert path consumes 2.3% of the intra-procedural budget at the median.",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.latency:budget_fraction"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "ratio",
+        "numerator": 54.7,
+        "denominator": 2400.0,
+        "expected": 0.023,
+        "tolerance": 0.0004,
+        "label": "end_to_end_budget_share"
+      }
+    },
+    {
+      "id": "C041",
+      "location": "Table A1, p. 25",
+      "statement": "Per-stage median latencies and throughput for the two perception routes.",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.latency:StageLedger"],
+      "verification": "execution",
+      "unbound": "the caption does not say which layers constitute each stage, so the printed values are compared rather than reproduced"
+    },
+    {
+      "id": "C042",
+      "location": "Table A1, p. 25",
+      "statement": "Offline causal estimation takes 18.4 min per 10,000 procedures on 8 CPU cores.",
+      "symbols": ["fluoroscopy_alert_takeover.workflow.latency:offline_analysis_rate"],
+      "verification": "execution"
+    },
+    {
+      "id": "C043",
+      "location": "Eq. (1), p. 16",
+      "statement": "Psi(a, Q) = E[ integral mu_a(H, m) Q(dm | H) ] with psi_dir, psi_med and theta defined from it.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.interventional:psi_functional"],
+      "verification": "execution"
+    },
+    {
+      "id": "C044",
+      "location": "Eq. (1), p. 16",
+      "statement": "psi = psi_dir + psi_med exactly.",
+      "symbols": ["fluoroscopy_alert_takeover.estimands.interventional:additivity_residual"],
+      "verification": "execution"
+    },
+    {
+      "id": "C045",
+      "location": "Eq. (2), p. 17",
+      "statement": "The one-step estimator with the exposure weight, the outcome residual and the two arm regressions.",
+      "symbols": ["fluoroscopy_alert_takeover.estimators.aipw:eq2_terms"],
+      "verification": "execution"
+    },
+    {
+      "id": "C046",
+      "location": "Algorithm 1, p. 16",
+      "statement": "Balance-first exposure model with family selection, gate sweep, effective sample size, covariate-marginal distance and positivity-deficit price.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.overlap.gate:build_certified_overlap_gate",
+        "fluoroscopy_alert_takeover.exposure.model:fit_balance_first_exposure",
+        "fluoroscopy_alert_takeover.overlap.effective_sample_size:kish_effective_sample_size"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C047",
+      "location": "Algorithm 1, step 7, p. 16",
+      "statement": "e_k = (sum pi)^2 / sum pi^2.",
+      "symbols": ["fluoroscopy_alert_takeover.overlap.effective_sample_size:kish_effective_sample_size"],
+      "verification": "execution"
+    },
+    {
+      "id": "C048",
+      "location": "Algorithm 1, step 12, p. 16",
+      "statement": "The positivity-deficit price is the gated contrast minus the ungated contrast.",
+      "symbols": ["fluoroscopy_alert_takeover.overlap.gate:positivity_deficit_price"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "difference",
+        "left": 4.1,
+        "right": 3.2,
+        "expected": 0.9,
+        "tolerance": 0.001,
+        "label": "positivity_deficit_price_takeover"
+      }
+    },
+    {
+      "id": "C049",
+      "location": "Algorithm 2, p. 16",
+      "statement": "The pre-specified falsification pair: negative-control outcomes, an exposure-side probe, the E-value and the bias-factor curve.",
+      "symbols": ["fluoroscopy_alert_takeover.falsification.protocol:run_falsification"],
+      "verification": "execution"
+    },
+    {
+      "id": "C050",
+      "location": "Algorithm 3, p. 18",
+      "statement": "Cross-fitted AIPW decomposition on patient-level folds, with the propensity clipped and the trimmed mass recorded.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.estimators.decomposition:cross_fitted_decomposition",
+        "fluoroscopy_alert_takeover.estimators.crossfit:clip_propensity"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C051",
+      "location": "Algorithm 3, step 9, p. 18",
+      "statement": "theta is the ratio of the mediated to the total component with an influence-function interval.",
+      "symbols": ["fluoroscopy_alert_takeover.estimators.influence:ratio"],
+      "verification": "execution"
+    },
+    {
+      "id": "C052",
+      "location": "Algorithm 4, p. 18",
+      "statement": "Honest-split causal forest: structural and estimation halves by patient, a causal tree on the covariates only, leaf estimates aggregated by leaf mass, and a gradient test across complexity classes.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.forest.causal_forest:HonestSplitCausalForest",
+        "fluoroscopy_alert_takeover.forest.honest_split:honest_split",
+        "fluoroscopy_alert_takeover.forest.gradient:monotone_gradient_test"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C053",
+      "location": "Algorithm 5, p. 20",
+      "statement": "Causal benefit curve over an abstention-band grid, with the operating point selected and frozen by a pre-specified criterion.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.operating_point.benefit_curve:causal_benefit_curve",
+        "fluoroscopy_alert_takeover.operating_point.abstention:select_operating_point"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C054",
+      "location": "Sec. 4.3, p. 15",
+      "statement": "Four identification assumptions, each with a probe, and the exposure state read from timestamped log events rather than a hidden score.",
+      "symbols": ["fluoroscopy_alert_takeover.protocol.probes:exchangeability_probe"],
+      "verification": "execution"
+    },
+    {
+      "id": "C055",
+      "location": "Sec. 4.4, p. 17",
+      "statement": "The certified area modifies the estimand rather than purifying a cohort-level one.",
+      "symbols": ["fluoroscopy_alert_takeover.analysis.pipeline:AnalysisConfig"],
+      "verification": "mapping"
+    },
+    {
+      "id": "C056",
+      "location": "Sec. 4.5, pp. 18-19",
+      "statement": "The two data layers: the clinical record layer and the analytic person-window table, with linkage, leak prevention and version pinning.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.cohort.layout:CohortLayout",
+        "fluoroscopy_alert_takeover.cohort.builder:build_person_windows"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C057",
+      "location": "Sec. 4.6, p. 19",
+      "statement": "The alert policy reads the navigation record and the fluoroscopic stream; four covariate blocks must be present before the gate opens.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.perception.spatial_predicate:AlertPolicyNet",
+        "fluoroscopy_alert_takeover.protocol.schema:COVARIATE_BLOCKS"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C058",
+      "location": "Sec. 4.7, p. 19",
+      "statement": "Three validation levels: per-site reporting, leave-one-site-out, and site-disjoint evaluation, with per-site calibration slopes and intercepts.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.inference.alternatives:leave_one_site_out",
+        "fluoroscopy_alert_takeover.perception.calibration:recalibrate"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C059",
+      "location": "Sec. 4.9, pp. 20-21",
+      "statement": "Influence-function intervals, site- and operator-level cluster-robust standard errors, bootstrap sensitivity, and two multiplicity families.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.inference.robust:cluster_robust_standard_error",
+        "fluoroscopy_alert_takeover.inference.bootstrap:bootstrap_summary",
+        "fluoroscopy_alert_takeover.multiplicity.corrections:two_family_report"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C060",
+      "location": "Table 2, p. 8",
+      "statement": "The two singly-robust estimators disagree by 2.1 pp and the doubly-robust estimate moves by less than 0.2 pp when a nuisance family is replaced.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.estimators.ablation:estimator_spread",
+        "fluoroscopy_alert_takeover.estimators.singly_robust:ipw_contrast"
+      ],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "difference",
+        "left": 4.4,
+        "right": 2.3,
+        "expected": 2.1,
+        "tolerance": 0.001,
+        "label": "singly_robust_spread"
+      }
+    },
+    {
+      "id": "C061",
+      "location": "Table 3, pp. 9-10",
+      "statement": "The two pooled complexity rows are size-weighted combinations of their contributing strata.",
+      "symbols": ["fluoroscopy_alert_takeover.reporting.tables:pooled_stratum_rows"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "weighted_mean",
+        "values": [2.4, 4.6],
+        "weights": [2918, 3441],
+        "expected": 3.6,
+        "tolerance": 0.05,
+        "label": "pooled_classes_one_two"
+      }
+    },
+    {
+      "id": "C062",
+      "location": "Table 1, pp. 6-7",
+      "statement": "The analytic cohort is the sum of the two exposure groups.",
+      "symbols": ["fluoroscopy_alert_takeover.cohort.builder:cohort_digest"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "sum",
+        "values": [4503, 5361],
+        "expected": 9864,
+        "tolerance": 0.5,
+        "label": "cohort_is_sum_of_groups"
+      }
+    },
+    {
+      "id": "C063",
+      "location": "Table 1, pp. 6-7",
+      "statement": "Region I and Region II partition each exposure group.",
+      "symbols": ["fluoroscopy_alert_takeover.reporting.tables:observed_outcomes"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "row_sums",
+        "rows": [[3014, 1489], [3612, 1749]],
+        "expected": [4503, 5361],
+        "tolerance": 0.5,
+        "label": "region_partition_of_groups"
+      }
+    },
+    {
+      "id": "C064",
+      "location": "Table 1, pp. 6-7",
+      "statement": "The complexity classes within each exposure group sum to that group.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:complexity_partition"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "row_sums",
+        "rows": [[1487, 1632, 1014], [1431, 1809, 1441]],
+        "expected": [4503, 5361],
+        "tolerance": 0.5,
+        "label": "complexity_partition_of_groups"
+      }
+    },
+    {
+      "id": "C065",
+      "location": "Table 3, p. 9; Table A2, p. 26",
+      "statement": "The site strata and the complexity classes describe the same analytic cohort.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:site_partition"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "sum",
+        "values": [4182, 3664, 2946],
+        "expected": 9864,
+        "tolerance": 0.5,
+        "label": "site_strata_reconcile_with_cohort"
+      }
+    },
+    {
+      "id": "C066",
+      "location": "Table 3, pp. 9-10",
+      "statement": "Operator-experience bands partition the analytic cohort.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.partitions:experience_partition"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "sum",
+        "values": [2214, 4106, 3544],
+        "expected": 9864,
+        "tolerance": 0.5,
+        "label": "experience_bands_partition_cohort"
+      }
+    },
+    {
+      "id": "C067",
+      "location": "Table 3, pp. 9-10",
+      "statement": "The maximum subgroup gap 3.8 pp follows from the printed stratum estimates.",
+      "symbols": ["fluoroscopy_alert_takeover.strata.gap:maximum_subgroup_gap"],
+      "verification": "arithmetic",
+      "arithmetic": {
+        "kind": "range_equals",
+        "values": [2.4, 4.6, 3.1, 2.2, 4.9, 3.4, 2.5, 3.6, 3.1, 2.6],
+        "expected": 3.8,
+        "tolerance": 0.05,
+        "label": "maximum_subgroup_gap_from_estimates"
+      }
+    },
+    {
+      "id": "C068",
+      "location": "Table 4 Panel E, p. 12",
+      "statement": "Stochastic-intervention estimand, operator-level cluster-robust inference, 1,000 bootstrap replicates and the leave-one-site-out range.",
+      "symbols": [
+        "fluoroscopy_alert_takeover.inference.alternatives:stochastic_intervention_contrast",
+        "fluoroscopy_alert_takeover.inference.alternatives:bootstrap_row"
+      ],
+      "verification": "execution"
+    },
+    {
+      "id": "C069",
+      "location": "Sec. 4.10, p. 21",
+      "statement": "Pre-specified success criteria: technical success at or above 88.0%, a completion interval excluding the null, and a subgroup gap inside 10 pp.",
+      "symbols": ["fluoroscopy_alert_takeover.reporting.success:success_criteria"],
+      "verification": "execution"
+    },
+    {
+      "id": "C070",
+      "location": "Data availability, p. 21",
+      "statement": "The raw cohort cannot be shared and may be requested from the primary author; no open dataset endpoint is named.",
+      "symbols": ["fluoroscopy_alert_takeover.cohort.layout:CohortLayout"],
+      "verification": "mapping"
+    }
+  ]
+}

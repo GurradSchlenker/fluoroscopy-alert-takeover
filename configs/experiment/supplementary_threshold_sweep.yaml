@@ -1,0 +1,21 @@
+# Supplementary: scaling and dose-response behaviour.
+#
+# Table A3 Panel A, p. 27 and Sec. 2.11, p. 12. The alert stream is regenerated from the
+# frozen edition at each threshold, and the contrast is re-estimated on the certified region
+# of that regenerated stream rather than on the primary one.
+
+protocol:
+  run_dir: runs/supplementary_threshold_sweep
+
+cohort:
+  root: data/cohort
+
+estimator:
+  n_folds: 5
+  clip_gamma: 0.01
+
+operating_point:
+  thresholds: [0.15, 0.25, 0.35, 0.45, 0.55]
+  abstention_low: 0.30
+  abstention_high: 0.40
+  burden_ceiling: 0.60

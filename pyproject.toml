@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fluoroscopy-alert-takeover"
+version = "1.0.0"
+description = "Target-trial emulation of fluoroscopy-derived navigation alerts on surgeon takeover in peripheral vascular intervention"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "numpy>=2.0",
+  "scipy>=1.13",
+  "scikit-learn>=1.4",
+  "torch>=2.4",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+  "black>=24.0",
+  "isort>=5.13",
+  "mypy>=1.11",
+]
+
+[project.scripts]
+fat-prepare = "fluoroscopy_alert_takeover.cli.prepare:main"
+fat-train-alert = "fluoroscopy_alert_takeover.cli.train_alert:main"
+fat-gate = "fluoroscopy_alert_takeover.cli.gate:main"
+fat-estimate = "fluoroscopy_alert_takeover.cli.estimate:main"
+fat-decompose = "fluoroscopy_alert_takeover.cli.decompose:main"
+fat-falsify = "fluoroscopy_alert_takeover.cli.falsify:main"
+fat-strata = "fluoroscopy_alert_takeover.cli.strata:main"
+fat-operating-point = "fluoroscopy_alert_takeover.cli.operating_point:main"
+fat-tables = "fluoroscopy_alert_takeover.cli.tables:main"
+fat-verify = "fluoroscopy_alert_takeover.cli.verify:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fluoroscopy_alert_takeover = ["verification/paper_reported.json"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F", "I", "N", "UP", "B", "A", "C4", "DTZ", "T20",
+  "EM", "ISC", "ICN", "PIE", "PT", "Q", "RET", "SIM", "TID", "ARG",
+  "PL", "RUF",
+]
+ignore = [
+  "PLR0913",   # estimators legitimately take many nuisance handles
+  "PLR2004",   # protocol constants are compared against literal thresholds
+  "SIM108",
+  "EM101",
+  "EM102",
+  "TID252",    # intra-package imports are relative by design in this release
+  "E501",      # black owns line length; it cannot split a long string literal either
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PLR0912", "PLR0915", "ARG001", "ARG002", "S101", "PT011", "PT018", "PLC0415"]
+"src/fluoroscopy_alert_takeover/cli/*" = ["T201"]   # the command line is the print boundary
+"src/fluoroscopy_alert_takeover/verification/conformance.py" = ["PLR0911", "PLR0912", "PLR0915"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+# Import order has one owner: isort writes it and ruff only checks that it is written.
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["fluoroscopy_alert_takeover"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/fluoroscopy_alert_takeover"]
+warn_unreachable = true
+disallow_any_unimported = false
+plugins = []
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*", "scipy.*", "yaml.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = ["error::RuntimeWarning"]

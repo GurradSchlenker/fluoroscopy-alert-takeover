@@ -1,0 +1,14 @@
+name: fluoroscopy-alert-takeover
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - python=3.11
+  - numpy>=2.0
+  - scipy>=1.13
+  - scikit-learn>=1.4
+  - pytorch>=2.4
+  - pyyaml>=6.0
+  - pip
+  - pip:
+      - -e .

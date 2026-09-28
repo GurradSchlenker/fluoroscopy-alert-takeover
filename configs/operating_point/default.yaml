@@ -1,0 +1,13 @@
+# Operating point
+#
+# Algorithm 5, p. 20; Table A3, p. 27; Table 4 Panel D, p. 12. The threshold sweep and the
+# parity requirement are printed; the abstention band and the burden ceiling are not.
+
+operating_point:
+  thresholds: [0.15, 0.25, 0.35, 0.45, 0.55]   # (paper) Table A3 Panel A, p. 27
+  volume_cuts_per_year: [420, 780]             # (paper) Table A3 Panel B, p. 27
+  abstention_low: 0.30
+  abstention_high: 0.40
+  burden_ceiling: 0.60
+  utility_floor: 0.0
+  parity_required: true                        # (paper) Table 4 Panel D, p. 12

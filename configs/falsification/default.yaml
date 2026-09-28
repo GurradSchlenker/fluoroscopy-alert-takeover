@@ -1,0 +1,17 @@
+# Falsification and sensitivity
+#
+# Algorithm 2, p. 16; Table 4 Panel A and Panel C, pp. 11-12. The negative-control outcomes
+# are printed; the bias-factor grid is named without values, so the grid below is a release
+# engineering default.
+
+falsification:
+  negative_controls:                  # (paper) Table 4 Panel A, p. 11
+    - emergency_representation_7d
+    - unrelated_diagnosis_admission
+    - contralateral_limb_intervention
+    - preprocedure_imaging_count
+    - anaesthesia_related_event
+  exposure_side_channel_named: true   # (paper) Algorithm 2, step 5, p. 16
+  evalue_from_risk_difference: true   # (paper) Algorithm 2, step 6, p. 16
+  gamma_grid: [1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.35, 1.40, 1.45,
+               1.50, 1.55, 1.60, 1.65, 1.70, 1.75, 1.80, 1.85, 1.90, 1.95, 2.00]

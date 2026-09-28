@@ -1,0 +1,17 @@
+# Cohort layers
+#
+# Sec. 4.5, pp. 18-19: the clinical record layer and the analytic person-window table. The
+# record layer is held under site data-sharing agreements and is never distributed, so the
+# root below is a deployment-time path rather than a shipped one.
+
+cohort:
+  root: data/cohort                   # engineering default
+  layers:
+    clinical_records: true            # (paper) Sec. 4.1, p. 14
+    person_window_table: true         # (paper) Sec. 4.1, p. 14
+  linkage:
+    cine: true                        # (paper) Sec. 4.5, p. 18
+    navigation_log: true
+    operating_report: true
+    follow_up: true
+  leak_prevention: true               # (paper) Sec. 4.5, p. 19
